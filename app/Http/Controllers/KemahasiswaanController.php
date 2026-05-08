@@ -30,7 +30,7 @@ class KemahasiswaanController extends Controller
             ->orderBy('created_at', 'asc')
             ->take(10)
             ->get();
-
+            
         return view('Kemahasiswaan.dashboard-kmhs', compact(
             'totalApproved',
             'totalRejected',
@@ -51,8 +51,9 @@ class KemahasiswaanController extends Controller
             ->orderBy('created_at', 'asc')
             ->paginate(15);
 
-        $totalAntrean = Sertifikat::where('status', 'verified_bem')->count();
+        $totalAntrean = Sertifikat::where('status', 'verified_by_bem')->count();
 
+        // echo $sertifikats->toJson();
         return view('Kemahasiswaan.verifikasi-kmhs', compact('sertifikats', 'totalAntrean'));
     }
 

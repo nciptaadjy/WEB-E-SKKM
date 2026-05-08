@@ -150,8 +150,8 @@
                                     <span class="text-[10px] font-bold text-outline uppercase"> Poin</span>
                                 </td>
                                 <td class="px-6 py-6">
-                                    @if($sertifikat->file_sertifikat)
-                                    <a href="{{ asset('storage/' . $sertifikat->file_sertifikat) }}" target="_blank"
+                                    @if($sertifikat->link_sertifikat)
+                                    <a href="{{ $sertifikat->link_sertifikat }}" target="_blank"
                                         class="inline-flex items-center gap-1 text-xs text-primary font-semibold hover:underline">
                                         <span class="material-symbols-outlined text-sm">visibility</span>
                                         Lihat File

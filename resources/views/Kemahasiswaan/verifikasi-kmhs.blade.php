@@ -127,6 +127,7 @@
                                 <th class="px-6 py-4 text-xs font-bold text-outline uppercase tracking-wider">Mahasiswa</th>
                                 <th class="px-6 py-4 text-xs font-bold text-outline uppercase tracking-wider">Kegiatan</th>
                                 <th class="px-6 py-4 text-xs font-bold text-outline uppercase tracking-wider">Verifikator BEM</th>
+                                <th class="px-6 py-4 text-xs font-bold text-outline uppercase tracking-wider">Link Sertifikat</th>
                                 <th class="px-6 py-4 text-xs font-bold text-outline uppercase tracking-wider">Poin</th>
                                 <th class="px-6 py-4 text-xs font-bold text-outline uppercase tracking-wider text-right">Aksi</th>
                             </tr>
@@ -146,6 +147,17 @@
                                 </td>
                                 <td class="px-6 py-6">
                                     <p class="text-xs text-on-surface-variant">{{ $sertifikat->verifierBem?->nama_pengguna ?? '-' }}</p>
+                                </td>
+                                <td class="px-6 py-6">
+                                    @if($sertifikat->link_sertifikat)
+                                    <a href="{{ $sertifikat->link_sertifikat }}" target="_blank"
+                                        class="inline-flex items-center gap-1 text-xs text-primary font-semibold hover:underline">
+                                        <span class="material-symbols-outlined text-sm">visibility</span>
+                                        Lihat File
+                                    </a>
+                                    @else
+                                    <span class="text-xs text-outline">-</span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-6">
                                     <span class="text-lg font-bold text-primary font-headline">{{ $sertifikat->bobot_snapshot }}</span>

@@ -45,7 +45,7 @@ class BemController extends Controller
             ->paginate(15);
 
         $totalAntrean = Sertifikat::where('status', 'pending')->count();
-
+        // echo $sertifikats->toJson();
         return view('BEM.verifikasi-bem', compact('sertifikats', 'totalAntrean'));
     }
 
