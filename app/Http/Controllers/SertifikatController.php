@@ -53,7 +53,7 @@ class SertifikatController extends Controller
                 'subKegiatans.kedudukans.bobotSkkms',
             ])
             ->get();
-
+        // echo $bidangKegiatans->toJson();
         return view('mahasiswa.upload-sertifikat', compact('bidangKegiatans'));
     }
 
@@ -62,13 +62,13 @@ class SertifikatController extends Controller
      */
     public function store(Request $request)
     {
-        dd([
-        'kedudukan_id' => $request->kedudukan_id,
-        'tingkat'      => $request->tingkat,
-        'bobot_query'  => BobotSkkm::where('kedudukan_id', $request->kedudukan_id)
-                            ->where('tingkat', $request->tingkat)
-                            ->first(),
-        ]);
+        // dd([
+        // 'kedudukan_id' => $request->kedudukan_id,
+        // 'tingkat'      => $request->tingkat,
+        // 'bobot_query'  => BobotSkkm::where('kedudukan_id', $request->kedudukan_id)
+        //                     ->where('tingkat', $request->tingkat)
+        //                     ->first(),
+        // ]);
         $request->validate([
             'nama_kegiatan' => 'required|string|max:255',
             'kedudukan_id' => 'required|exists:kedudukans,id',
@@ -147,12 +147,12 @@ class SertifikatController extends Controller
         ->get()
         ->map(fn($s) => [
             'id'          => $s->id,
-            'nama_sub'    => $s->nama_sub_kegiatan,
+            'nama_sub'    => $s->nama_sub,
             'has_tingkat' => (int) $s->has_tingkat, // ← cast ke int: true→1, false→0
         ]);
 
-
-        return response()->json($subs);
+        echo $subs->toJson();
+        // return response()->json($subs);
     }
 
     /**

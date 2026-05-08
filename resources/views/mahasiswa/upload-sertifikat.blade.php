@@ -866,10 +866,11 @@
             try {
                 const res = await fetch(`/mahasiswa/api/sub-kegiatan/${id}`);
                 const data = await res.json();
+                console.log(data);
                 subEl.innerHTML = '<option disabled selected value="">Pilih Sub Kegiatan</option>';
                 data.forEach(s => {
                     subEl.innerHTML +=
-                        `<option value="${s.id}" data-has-tingkat="${s.has_tingkat}">${s.nama_sub_kegiatan}</option>`;
+                        `<option value="${s.id}" data-has-tingkat="${s.has_tingkat}">${s.nama_sub}</option>`;
                 });
                 subEl.disabled = false;
             } catch (e) {
