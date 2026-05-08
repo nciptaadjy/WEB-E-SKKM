@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -18,9 +18,10 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'username',
+        'nama_pengguna',
         'password',
+        'role',
     ];
 
     /**
@@ -41,8 +42,33 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // ── Relasi ──
+
+    /** Sertifikat yang diverifikasi oleh user ini (sebagai BEM) */
+    public function sertifikatsVerifiedBem(): HasMany
+    {
+        return $this->hasMany(Sertifikat::class, 'verified_by_bem');
+    }
+
+    /** Sertifikat yang diverifikasi oleh user ini (sebagai Kemahasiswaan) */
+    public function sertifikatsVerifiedKhms(): HasMany
+    {
+        return $this->hasMany(Sertifikat::class, 'verified_by_khms');
+    }
+
+    /** Event yang dibuat oleh user ini (Ormawa/BEM) */
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class, 'user_id');
+    }
+
+    /** Bobot SKKM yang diupdate oleh user ini */
+    public function bobotSkkms(): HasMany
+    {
+        return $this->hasMany(BobotSkkm::class, 'updated_by');
     }
 }

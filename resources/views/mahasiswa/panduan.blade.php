@@ -132,7 +132,7 @@
             </div>
             <nav class="flex-1 space-y-1">
                 <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-white/50 rounded-xl transition-all"
-                    href={{ route('dashboard') }}>
+                    href="{{ route('mahasiswa.dashboard') }}">
                     <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
                     <span class="font-inter text-sm font-medium">Dashboard</span>
                 </a>
@@ -142,7 +142,7 @@
                     <span class="font-inter text-sm font-medium">Upload Sertifikat</span>
                 </a>
                 <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-white/50 rounded-xl transition-all"
-                    href={{ route('sertifikat.show') }}>
+                    href="{{ route('sertifikat.index') }}">
                     <span class="material-symbols-outlined" data-icon="assignment">assignment</span>
                     <span class="font-inter text-sm font-medium">List Sertifikat</span>
                 </a>
@@ -158,11 +158,13 @@
                     <span class="material-symbols-outlined text-sm" data-icon="support_agent">support_agent</span>
                     Bantuan Teknis
                 </button> --}}
-                <a class="flex items-center gap-3 px-4 py-3 text-tertiary hover:bg-error-container/20 rounded-xl transition-all"
-                    href="#">
-                    <span class="material-symbols-outlined" data-icon="logout">logout</span>
-                    <span class="font-inter text-sm font-medium">Keluar</span>
-                </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-tertiary hover:bg-error-container/20 rounded-xl transition-all">
+                        <span class="material-symbols-outlined">logout</span>
+                        <span class="text-sm font-medium">Keluar</span>
+                    </button>
+                </form>
             </div>
         </aside>
         <!-- ===================== MAIN CONTENT ===================== -->
@@ -186,9 +188,15 @@
             <!-- Tab Navigation -->
             <section class="mb-10 border-b border-outline-variant/30">
                 <div class="flex gap-8 px-2 overflow-x-auto whitespace-nowrap">
-                    <button class="pb-4 tab-active text-sm md:text-base font-['Manrope'] transition-all">Proses E-SKKM</button>
-                    <button class="pb-4 text-outline hover:text-primary text-sm md:text-base font-['Manrope'] font-semibold transition-all">Tentang E-SKKM</button>
-                    <button class="pb-4 text-outline hover:text-primary text-sm md:text-base font-['Manrope'] font-semibold transition-all">Bobot SKKM</button>
+                    <a href="{{ route('panduan') }}">
+                        <button class="pb-4 tab-active text-sm md:text-base font-['Manrope'] transition-all">Proses E-SKKM</button>
+                    </a>
+                    <a href="{{ route('panduan.tentang-skkm') }}">
+                        <button class="pb-4 text-outline hover:text-primary text-sm md:text-base font-['Manrope'] font-semibold transition-all">Tentang E-SKKM</button>
+                    </a>
+                    <a href="{{ route('panduan.bobot-skkm') }}">
+                        <button class="pb-4 text-outline hover:text-primary text-sm md:text-base font-['Manrope'] font-semibold transition-all">Bobot SKKM</button>
+                    </a>
                 </div>
             </section>
 
@@ -339,11 +347,11 @@
 
     <!-- Mobile Navigation (sama dengan dashboard) -->
     <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.05)] h-16 flex items-center justify-around z-50">
-        <a class="flex flex-col items-center text-slate-400" href="{{ route('dashboard') }}">
+        <a class="flex flex-col items-center text-slate-400" href="{{ route('mahasiswa.dashboard') }}">
             <span class="material-symbols-outlined">dashboard</span>
             <span class="text-[10px] font-medium">Dasbor</span>
         </a>
-        <a class="flex flex-col items-center text-slate-400" href="{{ route('sertifikat.show') }}">
+        <a class="flex flex-col items-center text-slate-400" href="{{ route('sertifikat.index') }}">
             <span class="material-symbols-outlined">assignment</span>
             <span class="text-[10px] font-medium">Kegiatan</span>
         </a>
