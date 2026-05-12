@@ -91,10 +91,15 @@
         .tonal-shift-bg {
             background: linear-gradient(180deg, rgba(246, 250, 254, 0.8) 0%, rgba(240, 244, 248, 0.8) 100%);
         }
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .page-fade-in { animation: pageFadeIn 0.5s ease both; }
     </style>
 </head>
 
-<body class="bg-surface font-body text-on-surface min-h-screen flex flex-col">
+<body class="bg-surface font-body text-on-surface min-h-screen flex flex-col page-fade-in">
     <!-- TopNavBar - Suppressed for Login context as per Shell Visibility Rules,
          but UI asks for consistency. Since Login is Transactional/Focused,
          we prioritize content but include a minimal Brand anchor. -->

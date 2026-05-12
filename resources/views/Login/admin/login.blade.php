@@ -43,10 +43,15 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .page-fade-in { animation: pageFadeIn 0.5s ease both; }
     </style>
 </head>
 
-<body class="bg-surface min-h-screen flex items-center justify-center p-4">
+<body class="bg-surface min-h-screen flex items-center justify-center p-4 page-fade-in">
 
     {{-- Decorative background --}}
     <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">

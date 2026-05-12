@@ -60,7 +60,6 @@ Route::middleware(['auth', 'role:bem'])->prefix('bem')->group(function () {
     Route::post('/verifikasi/{sertifikat}/reject', [BemController::class, 'reject'])->name('bem.reject');
 });
 
-
 // ══════════════════════════════════════════════
 // KEMAHASISWAAN ROUTES
 // ══════════════════════════════════════════════
@@ -70,6 +69,22 @@ Route::middleware(['auth', 'role:kemahasiswaan'])->prefix('kemahasiswaan')->grou
     Route::get('/verifikasi', [KemahasiswaanController::class, 'verifikasi'])->name('kemahasiswaan.verifikasi');
     Route::post('/verifikasi/{sertifikat}/approve', [KemahasiswaanController::class, 'approve'])->name('kemahasiswaan.approve');
     Route::post('/verifikasi/{sertifikat}/reject', [KemahasiswaanController::class, 'reject'])->name('kemahasiswaan.reject');
+
+    // Account Management
+    Route::get('/akun', [KemahasiswaanController::class, 'manageAkun'])->name('kemahasiswaan.akun');
+    Route::post('/akun', [KemahasiswaanController::class, 'storeAkun'])->name('kemahasiswaan.akun.store');
+    Route::delete('/akun/{user}', [KemahasiswaanController::class, 'deleteAkun'])->name('kemahasiswaan.akun.delete');
+    Route::post('/akun/{user}/reset-password', [KemahasiswaanController::class, 'resetPassword'])->name('kemahasiswaan.akun.reset-password');
+
+    // Batch Penomoran Approval
+    Route::get('/batch-penomoran', [KemahasiswaanController::class, 'batchPenomoran'])->name('kemahasiswaan.batch');
+    Route::post('/batch-penomoran/{batch}/approve', [KemahasiswaanController::class, 'approveBatch'])->name('kemahasiswaan.batch.approve');
+    Route::post('/batch-penomoran/{batch}/reject', [KemahasiswaanController::class, 'rejectBatch'])->name('kemahasiswaan.batch.reject');
+
+    // Point Management
+    Route::get('/manage-point', [KemahasiswaanController::class, 'managePoint'])->name('kemahasiswaan.point');
+    Route::post('/bobot/{bobot}/update', [KemahasiswaanController::class, 'updateBobot'])->name('kemahasiswaan.bobot.update');
+    Route::post('/bidang/{bidang}/update', [KemahasiswaanController::class, 'updateBidang'])->name('kemahasiswaan.bidang.update');
 });
 
 
@@ -78,4 +93,18 @@ Route::middleware(['auth', 'role:kemahasiswaan'])->prefix('kemahasiswaan')->grou
 // ══════════════════════════════════════════════
 Route::middleware(['auth', 'role:ormawa'])->prefix('ormawa')->group(function () {
     Route::get('/dashboard', [OrmawaController::class, 'index'])->name('ormawa.dashboard');
+
+    // Event Management (Berita)
+    Route::get('/events', [OrmawaController::class, 'events'])->name('ormawa.events');
+    Route::get('/events/create', [OrmawaController::class, 'createEvent'])->name('ormawa.events.create');
+    Route::post('/events', [OrmawaController::class, 'storeEvent'])->name('ormawa.events.store');
+    Route::delete('/events/{event}', [OrmawaController::class, 'deleteEvent'])->name('ormawa.events.delete');
+
+    // CSV Upload Peserta
+    Route::get('/events/{event}/peserta', [OrmawaController::class, 'showUploadPeserta'])->name('ormawa.peserta');
+    Route::post('/events/{event}/peserta/upload', [OrmawaController::class, 'uploadPeserta'])->name('ormawa.peserta.upload');
+
+    // Batch Penomoran
+    Route::get('/batch-penomoran', [OrmawaController::class, 'batchPenomoran'])->name('ormawa.batch');
+    Route::post('/batch-penomoran', [OrmawaController::class, 'storeBatchPenomoran'])->name('ormawa.batch.store');
 });

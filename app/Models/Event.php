@@ -12,11 +12,13 @@ class Event extends Model
         'user_id',
         'sub_kegiatan_id',
         'judul_event',
+        'nama_event',
         'deskripsi',
         'tanggal_mulai',
         'tanggal_selesai',
         'status_event',
         'foto_event',
+        'link_form',
     ];
 
     protected $casts = [

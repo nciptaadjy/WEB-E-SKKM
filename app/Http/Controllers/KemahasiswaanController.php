@@ -6,9 +6,15 @@ use App\Models\Sertifikat;
 use App\Models\Pencapaian;
 use App\Models\PencapaianDetail;
 use App\Models\BidangKegiatan;
+use App\Models\SubKegiatan;
 use App\Models\Mahasiswa;
+use App\Models\User;
+use App\Models\BobotSkkm;
+use App\Models\BatchPenomoran;
+use App\Models\NomorSertifikat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class KemahasiswaanController extends Controller
 {
@@ -24,7 +30,6 @@ class KemahasiswaanController extends Controller
 
         $totalMahasiswa = Mahasiswa::count();
 
-        // Sertifikat yang sudah diverifikasi BEM (menunggu verifikasi final)
         $pendingSertifikats = Sertifikat::where('status', 'verified_bem')
             ->with(['mahasiswa', 'kedudukan.subKegiatan.bidangKegiatan', 'verifierBem'])
             ->orderBy('created_at', 'asc')
@@ -51,15 +56,13 @@ class KemahasiswaanController extends Controller
             ->orderBy('created_at', 'asc')
             ->paginate(15);
 
-        $totalAntrean = Sertifikat::where('status', 'verified_by_bem')->count();
+        $totalAntrean = Sertifikat::where('status', 'verified_bem')->count();
 
-        // echo $sertifikats->toJson();
         return view('Kemahasiswaan.verifikasi-kmhs', compact('sertifikats', 'totalAntrean'));
     }
 
     /**
      * Approve sertifikat (verifikasi final Kemahasiswaan)
-     * Menambahkan poin ke pencapaian mahasiswa
      */
     public function approve(Sertifikat $sertifikat)
     {
@@ -68,7 +71,6 @@ class KemahasiswaanController extends Controller
             'verified_by_khms' => Auth::id(),
         ]);
 
-        // Tambah poin ke pencapaian mahasiswa
         $this->tambahPoin($sertifikat);
 
         return back()->with('success', 'Sertifikat berhasil disetujui!');
@@ -76,18 +78,15 @@ class KemahasiswaanController extends Controller
 
     private function tambahPoin(Sertifikat $sertifikat)
     {
-        // Cari atau buat pencapaian mahasiswa
         $pencapaian = Pencapaian::firstOrCreate([
             'mahasiswa_id' => $sertifikat->mahasiswa_id,
         ]);
 
-        // Cari bidang kegiatan dari relasi
         $bidangId = $sertifikat->kedudukan
             ->subKegiatan
             ->bidangKegiatan
             ->id;
 
-        // Update total per bidang
         $detail = PencapaianDetail::firstOrCreate([
             'pencapaian_id'     => $pencapaian->id,
             'bidang_kegiatan_id'=> $bidangId,
@@ -95,7 +94,6 @@ class KemahasiswaanController extends Controller
 
         $detail->increment('total_poin', $sertifikat->bobot_snapshot);
 
-        // Update total keseluruhan
         $pencapaian->update([
             'total_keseluruhan' => $pencapaian->details->sum('total_poin'),
         ]);
@@ -119,36 +117,170 @@ class KemahasiswaanController extends Controller
         return redirect()->back()->with('success', 'Sertifikat ditolak.');
     }
 
-    /**
-     * Update pencapaian mahasiswa setelah sertifikat approved
-     */
-    private function updatePencapaian(Sertifikat $sertifikat)
+    // ══════════════════════════════════════════════
+    // ACCOUNT MANAGEMENT (BEM & Ormawa)
+    // ══════════════════════════════════════════════
+
+    public function manageAkun()
     {
-        $mahasiswaId = $sertifikat->mahasiswa_id;
+        $users = User::whereIn('role', ['bem', 'ormawa'])
+            ->orderBy('role')
+            ->orderBy('nama_pengguna')
+            ->get();
 
-        // Ambil/buat record pencapaian
-        $pencapaian = Pencapaian::firstOrCreate(
-            ['mahasiswa_id' => $mahasiswaId],
-            ['total_keseluruhan' => 0]
-        );
+        return view('Kemahasiswaan.manage-akun', compact('users'));
+    }
 
-        // Ambil bidang kegiatan dari sertifikat
-        $bidangId = $sertifikat->kedudukan?->subKegiatan?->bidang_kegiatan_id;
+    public function storeAkun(Request $request)
+    {
+        $request->validate([
+            'username'      => 'required|string|max:50|unique:users,username',
+            'nama_pengguna' => 'required|string|max:100',
+            'password'      => 'required|string|min:6',
+            'role'          => 'required|in:bem,ormawa',
+        ]);
 
-        if ($bidangId) {
-            // Update atau buat detail pencapaian per bidang
-            $detail = PencapaianDetail::firstOrCreate(
-                [
-                    'pencapaian_id' => $pencapaian->id,
-                    'bidang_kegiatan_id' => $bidangId,
-                ],
-                ['total_poin' => 0]
-            );
+        User::create([
+            'username'      => $request->username,
+            'nama_pengguna' => $request->nama_pengguna,
+            'password'      => Hash::make($request->password),
+            'role'          => $request->role,
+        ]);
 
-            $detail->increment('total_poin', $sertifikat->bobot_snapshot);
+        return back()->with('success', "Akun {$request->role} berhasil dibuat!");
+    }
+
+    public function deleteAkun(User $user)
+    {
+        if (!in_array($user->role, ['bem', 'ormawa'])) {
+            return back()->with('error', 'Tidak dapat menghapus akun ini.');
         }
 
-        // Recalculate total keseluruhan
-        $pencapaian->recalculate();
+        $user->delete();
+        return back()->with('success', 'Akun berhasil dihapus.');
+    }
+
+    public function resetPassword(Request $request, User $user)
+    {
+        if (!in_array($user->role, ['bem', 'ormawa'])) {
+            return back()->with('error', 'Tidak dapat mereset password akun ini.');
+        }
+
+        $request->validate([
+            'new_password' => 'required|string|min:6',
+        ]);
+
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return back()->with('success', "Password untuk {$user->nama_pengguna} berhasil direset.");
+    }
+
+    // ══════════════════════════════════════════════
+    // BATCH PENOMORAN APPROVAL
+    // ══════════════════════════════════════════════
+
+    public function batchPenomoran()
+    {
+        $batches = BatchPenomoran::with(['event.pesertaEvents', 'requester', 'approver'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('Kemahasiswaan.batch-penomoran', compact('batches'));
+    }
+
+    public function approveBatch(Request $request, BatchPenomoran $batch)
+    {
+        if ($batch->status !== 'pending') {
+            return back()->with('error', 'Batch ini sudah diproses.');
+        }
+
+        $batch->update([
+            'status'      => 'approved',
+            'approved_by' => Auth::id(),
+            'approved_at' => now(),
+        ]);
+
+        // Generate nomor sertifikat for each peserta
+        $format = $batch->format_nomor ?: 'SKKM/{nomor}/{tahun}';
+        $peserta = $batch->event->pesertaEvents;
+        $tahun = date('Y');
+        $counter = NomorSertifikat::count() + 1;
+
+        foreach ($peserta as $p) {
+            $nomor = str_replace(
+                ['{nomor}', '{tahun}'],
+                [str_pad($counter, 4, '0', STR_PAD_LEFT), $tahun],
+                $format
+            );
+
+            NomorSertifikat::create([
+                'batch_id'         => $batch->id,
+                'peserta_event_id' => $p->id,
+                'nomor_sertifikat' => $nomor,
+            ]);
+
+            $p->update(['status_sertifikat' => 'sudah_generate']);
+            $counter++;
+        }
+
+        return back()->with('success', "Batch disetujui! {$peserta->count()} nomor sertifikat berhasil digenerate.");
+    }
+
+    public function rejectBatch(Request $request, BatchPenomoran $batch)
+    {
+        $request->validate([
+            'catatan' => 'nullable|string|max:500',
+        ]);
+
+        $batch->update([
+            'status'      => 'rejected',
+            'catatan'     => $request->catatan ?? 'Ditolak oleh Kemahasiswaan.',
+            'approved_by' => Auth::id(),
+            'approved_at' => now(),
+        ]);
+
+        return back()->with('success', 'Batch penomoran ditolak.');
+    }
+
+    // ══════════════════════════════════════════════
+    // MANAGE POINT SKKM
+    // ══════════════════════════════════════════════
+
+    public function managePoint()
+    {
+        $bidangs = BidangKegiatan::with(['subKegiatans.kedudukans.bobotSkkms'])->get();
+
+        return view('Kemahasiswaan.manage-point', compact('bidangs'));
+    }
+
+    public function updateBobot(Request $request, BobotSkkm $bobot)
+    {
+        $request->validate([
+            'bobot' => 'required|numeric|min:0|max:100',
+        ]);
+
+        $bobot->update([
+            'bobot'      => $request->bobot,
+            'updated_by' => Auth::id(),
+        ]);
+
+        return back()->with('success', 'Bobot berhasil diupdate.');
+    }
+
+    public function updateBidang(Request $request, BidangKegiatan $bidang)
+    {
+        $request->validate([
+            'nama_bidang' => 'required|string|max:100',
+            'is_wajib'    => 'required|boolean',
+        ]);
+
+        $bidang->update([
+            'nama_bidang' => $request->nama_bidang,
+            'is_wajib'    => $request->is_wajib,
+        ]);
+
+        return back()->with('success', "Bidang '{$bidang->nama_bidang}' berhasil diupdate.");
     }
 }
