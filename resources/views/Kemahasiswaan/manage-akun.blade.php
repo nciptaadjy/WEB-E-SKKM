@@ -87,6 +87,12 @@
             </table>
         </div>
         @endif
+
+        @if($users->hasPages())
+        <div class="p-4 md:p-6 bg-surface-container-low/30 border-t border-outline-variant/5">
+            {{ $users->links() }}
+        </div>
+        @endif
     </div>
 
     {{-- Modal: Create Account --}}

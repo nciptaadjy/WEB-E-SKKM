@@ -164,6 +164,13 @@
             </a>
         </div>
         @endforelse
+
+        {{-- Pagination --}}
+        @if($sertifikats->hasPages())
+        <div class="mt-6">
+            {{ $sertifikats->links() }}
+        </div>
+        @endif
     </div>
 
     {{-- Sertifikat Detail Modal --}}

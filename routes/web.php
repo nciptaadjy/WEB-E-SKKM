@@ -46,6 +46,9 @@ Route::middleware('mahasiswa.auth')->prefix('mahasiswa')->group(function () {
     Route::get('/api/sub-kegiatan/{bidangId}', [SertifikatController::class, 'getSubKegiatan'])->name('api.sub-kegiatan');
     Route::get('/api/kedudukan/{subId}', [SertifikatController::class, 'getKedudukan'])->name('api.kedudukan');
     Route::get('/api/bobot/{kedudukanId}/{tingkat?}', [SertifikatController::class, 'getBobot'])->name('api.bobot');
+
+    // Berita Event
+    Route::get('/events', [DashboardController::class, 'events'])->name('mahasiswa.events');
 });
 
 
@@ -85,6 +88,11 @@ Route::middleware(['auth', 'role:kemahasiswaan'])->prefix('kemahasiswaan')->grou
     Route::get('/manage-point', [KemahasiswaanController::class, 'managePoint'])->name('kemahasiswaan.point');
     Route::post('/bobot/{bobot}/update', [KemahasiswaanController::class, 'updateBobot'])->name('kemahasiswaan.bobot.update');
     Route::post('/bidang/{bidang}/update', [KemahasiswaanController::class, 'updateBidang'])->name('kemahasiswaan.bidang.update');
+    Route::post('/bidang', [KemahasiswaanController::class, 'storeBidang'])->name('kemahasiswaan.bidang.store');
+    Route::delete('/bidang/{bidang}', [KemahasiswaanController::class, 'deleteBidang'])->name('kemahasiswaan.bidang.delete');
+    Route::post('/sub-kegiatan', [KemahasiswaanController::class, 'storeSubKegiatan'])->name('kemahasiswaan.sub.store');
+    Route::post('/sub-kegiatan/{sub}/update', [KemahasiswaanController::class, 'updateSubKegiatan'])->name('kemahasiswaan.sub.update');
+    Route::delete('/sub-kegiatan/{sub}', [KemahasiswaanController::class, 'deleteSubKegiatan'])->name('kemahasiswaan.sub.delete');
 });
 
 

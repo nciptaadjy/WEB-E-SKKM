@@ -126,7 +126,7 @@ class KemahasiswaanController extends Controller
         $users = User::whereIn('role', ['bem', 'ormawa'])
             ->orderBy('role')
             ->orderBy('nama_pengguna')
-            ->get();
+            ->paginate(15);
 
         return view('Kemahasiswaan.manage-akun', compact('users'));
     }
@@ -282,5 +282,67 @@ class KemahasiswaanController extends Controller
         ]);
 
         return back()->with('success', "Bidang '{$bidang->nama_bidang}' berhasil diupdate.");
+    }
+
+    public function storeBidang(Request $request)
+    {
+        $request->validate([
+            'nama_bidang' => 'required|string|max:100',
+            'is_wajib'    => 'required|boolean',
+        ]);
+
+        BidangKegiatan::create([
+            'nama_bidang' => $request->nama_bidang,
+            'is_wajib'    => $request->is_wajib,
+            'is_active'   => true,
+        ]);
+
+        return back()->with('success', "Bidang '{$request->nama_bidang}' berhasil ditambahkan.");
+    }
+
+    public function deleteBidang(BidangKegiatan $bidang)
+    {
+        $nama = $bidang->nama_bidang;
+        $bidang->delete();
+        return back()->with('success', "Bidang '{$nama}' berhasil dihapus.");
+    }
+
+    public function storeSubKegiatan(Request $request)
+    {
+        $request->validate([
+            'bidang_kegiatan_id' => 'required|exists:bidang_kegiatan,id',
+            'nama_sub'           => 'required|string|max:150',
+            'has_tingkat'        => 'required|boolean',
+        ]);
+
+        SubKegiatan::create([
+            'bidang_kegiatan_id' => $request->bidang_kegiatan_id,
+            'nama_sub'           => $request->nama_sub,
+            'has_tingkat'        => $request->has_tingkat,
+            'is_active'          => true,
+        ]);
+
+        return back()->with('success', "Sub kegiatan '{$request->nama_sub}' berhasil ditambahkan.");
+    }
+
+    public function updateSubKegiatan(Request $request, SubKegiatan $sub)
+    {
+        $request->validate([
+            'nama_sub'    => 'required|string|max:150',
+            'has_tingkat' => 'required|boolean',
+        ]);
+
+        $sub->update([
+            'nama_sub'    => $request->nama_sub,
+            'has_tingkat' => $request->has_tingkat,
+        ]);
+
+        return back()->with('success', "Sub kegiatan berhasil diupdate.");
+    }
+
+    public function deleteSubKegiatan(SubKegiatan $sub)
+    {
+        $sub->delete();
+        return back()->with('success', "Sub kegiatan berhasil dihapus.");
     }
 }

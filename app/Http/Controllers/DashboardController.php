@@ -73,4 +73,19 @@ class DashboardController extends Controller
             'sertifikats'
         ));
     }
+
+    /**
+     * Berita Event — mahasiswa melihat semua event
+     */
+    public function events()
+    {
+        $events = Event::with('subKegiatan.bidangKegiatan')
+            ->orderByRaw("CASE WHEN status_event = 'berlangsung' THEN 0 WHEN status_event = 'akan_datang' THEN 1 ELSE 2 END")
+            ->orderBy('tanggal_mulai', 'desc')
+            ->paginate(12);
+
+        $mahasiswa = \App\Models\Mahasiswa::find(session('mahasiswa_id'));
+
+        return view('mahasiswa.events', compact('events', 'mahasiswa'));
+    }
 }

@@ -19,15 +19,17 @@ class SertifikatController extends Controller
     {
         $mahasiswaId = session('mahasiswa_id');
 
+        // Statistik (query all for counts)
+        $allSertifikats = Sertifikat::where('mahasiswa_id', $mahasiswaId)->get();
+        $totalPoin = $allSertifikats->where('status', 'approved')->sum('bobot_snapshot');
+        $totalApproved = $allSertifikats->where('status', 'approved')->count();
+        $totalPending = $allSertifikats->whereIn('status', ['pending', 'verified_bem'])->count();
+
+        // Paginated list
         $sertifikats = Sertifikat::where('mahasiswa_id', $mahasiswaId)
             ->with(['kedudukan.subKegiatan.bidangKegiatan'])
             ->orderBy('created_at', 'desc')
-            ->get();
-
-        // Statistik
-        $totalPoin = $sertifikats->where('status', 'approved')->sum('bobot_snapshot');
-        $totalApproved = $sertifikats->where('status', 'approved')->count();
-        $totalPending = $sertifikats->whereIn('status', ['pending', 'verified_bem'])->count();
+            ->paginate(10);
 
         return view('mahasiswa.list-sertifikat', compact(
             'sertifikats',

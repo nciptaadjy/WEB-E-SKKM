@@ -17,6 +17,11 @@
             <span class="material-symbols-outlined">add</span>
         </a>
     </div>
+    <a class="flex flex-col items-center gap-0.5 {{ $activePage === 'events' ? 'text-primary' : 'text-slate-400' }}"
+        href="{{ route('mahasiswa.events') }}">
+        <span class="material-symbols-outlined text-[22px]">campaign</span>
+        <span class="text-[10px] {{ $activePage === 'events' ? 'font-bold' : 'font-medium' }}">Event</span>
+    </a>
     <a class="flex flex-col items-center gap-0.5 {{ $activePage === 'panduan' ? 'text-primary' : 'text-slate-400' }}"
         href="{{ route('panduan') }}">
         <span class="material-symbols-outlined text-[22px]">menu_book</span>

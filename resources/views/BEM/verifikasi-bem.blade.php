@@ -1,178 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>E-SKKM BEM - Verifikasi</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: { extend: {
-                colors: {
-                    "primary": "#005ea4", "primary-container": "#0077ce", "on-primary": "#ffffff",
-                    "on-primary-container": "#fdfcff", "secondary": "#006e1c", "secondary-container": "#98f994",
-                    "on-secondary": "#ffffff", "on-secondary-container": "#0c7521",
-                    "tertiary": "#b7131a", "tertiary-container": "#db322f", "on-tertiary": "#ffffff",
-                    "error": "#ba1a1a", "error-container": "#ffdad6", "on-error": "#ffffff",
-                    "on-error-container": "#93000a", "background": "#f6fafe", "surface": "#f6fafe",
-                    "surface-container-lowest": "#ffffff", "surface-container-low": "#f0f4f8",
-                    "surface-container": "#eaeef2", "surface-container-high": "#e4e9ed",
-                    "on-surface": "#171c1f", "on-surface-variant": "#404752",
-                    "outline": "#707783", "outline-variant": "#c0c7d4",
-                    "primary-fixed": "#d3e4ff", "secondary-fixed": "#98f994",
-                    "tertiary-fixed": "#ffdad6",
-                },
-                fontFamily: { headline: ["Manrope"], body: ["Inter"], label: ["Inter"] }
-            }}
-        }
-    </script>
-    <style>
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        body { font-family: 'Inter', sans-serif; }
-        h1, h2, h3, .headline { font-family: 'Manrope', sans-serif; }
-
-        /* Sidebar overlay mobile */
-        #sidebar-overlay { transition: opacity 0.25s ease; }
-        #mobile-sidebar-bem { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        #mobile-sidebar-bem.open { transform: translateX(0); }
-
-        /* Modal */
-        .modal-wrap { transition: opacity 0.2s ease; }
-        .modal-wrap.hidden { opacity: 0; pointer-events: none; }
-        .modal-box {
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
-        }
-        .modal-wrap.hidden .modal-box { transform: scale(0.92) translateY(20px); opacity: 0; }
-        .modal-wrap:not(.hidden) .modal-box { transform: scale(1) translateY(0); opacity: 1; }
-
-        /* Page fade in */
-        @keyframes pageFadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .page-fade-in { animation: pageFadeIn 0.4s ease both; }
-    </style>
-</head>
-
-<body class="bg-background text-on-surface antialiased">
-
-    {{-- ===== SIDEBAR OVERLAY (mobile) ===== --}}
-    <div id="sidebar-overlay"
-        class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden"
-        onclick="toggleSidebar()"></div>
-
-    {{-- ===== MOBILE SIDEBAR ===== --}}
-    <aside id="mobile-sidebar-bem"
-        class="fixed top-0 left-0 h-full w-72 z-50 bg-blue-50/95 backdrop-blur-xl shadow-2xl flex flex-col
-               -translate-x-full md:hidden">
-        <div class="flex flex-col gap-2 p-6 h-full">
-            <div class="flex items-center justify-between mb-10">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
-                        <span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">account_balance</span>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-bold tracking-tight text-blue-800">E-SKKM</h1>
-                        <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">BEM Dashboard</p>
-                    </div>
-                </div>
-                <button onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-white/50">
-                    <span class="material-symbols-outlined text-slate-500">close</span>
-                </button>
-            </div>
-            <nav class="flex flex-col gap-1">
-                <a class="flex items-center gap-3 px-6 py-4 text-slate-500 font-medium hover:bg-white/30 transition-all rounded-xl" href="{{ route('bem.dashboard') }}">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <span class="font-semibold text-sm">Dasbor</span>
-                </a>
-                <a class="flex items-center gap-3 px-6 py-4 text-blue-700 font-bold bg-white/50 rounded-xl shadow-sm" href="{{ route('bem.verifikasi') }}">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fact_check</span>
-                    <span class="font-semibold text-sm">Form Verifikasi</span>
-                </a>
-            </nav>
-            <div class="mt-auto pt-6 border-t border-outline-variant/10">
-                <form action="{{ route('logout.admin') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="w-full bg-tertiary text-on-tertiary py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-lg shadow-tertiary/20">
-                        <span class="material-symbols-outlined">logout</span><span>Keluar</span>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </aside>
-
-    {{-- ===== DESKTOP SIDEBAR (always visible) ===== --}}
-    <aside class="hidden md:flex fixed top-0 left-0 h-screen w-72 z-30 bg-blue-50/80 backdrop-blur-xl shadow-[0_12px_40px_rgba(23,28,31,0.06)] flex-col">
-        <div class="flex flex-col gap-2 p-6 h-full">
-            <div class="flex items-center gap-3 mb-10">
-                <div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
-                    <span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">account_balance</span>
-                </div>
-                <div>
-                    <h1 class="text-2xl font-bold tracking-tight text-blue-800">E-SKKM</h1>
-                    <p class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">BEM Dashboard</p>
-                </div>
-            </div>
-            <nav class="flex flex-col gap-1">
-                <a class="flex items-center gap-3 px-6 py-4 text-slate-500 font-medium hover:bg-white/30 transition-all rounded-xl" href="{{ route('bem.dashboard') }}">
-                    <span class="material-symbols-outlined">dashboard</span>
-                    <span class="font-semibold text-sm">Dasbor</span>
-                </a>
-                <a class="flex items-center gap-3 px-6 py-4 text-blue-700 font-bold bg-white/50 rounded-xl shadow-sm" href="{{ route('bem.verifikasi') }}">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fact_check</span>
-                    <span class="font-semibold text-sm">Form Verifikasi</span>
-                </a>
-            </nav>
-            <div class="mt-auto pt-6 border-t border-outline-variant/10">
-                <form action="{{ route('logout.admin') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="w-full bg-tertiary text-on-tertiary py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity shadow-lg shadow-tertiary/20">
-                        <span class="material-symbols-outlined">logout</span><span>Keluar</span>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </aside>
-
-    {{-- ===== MAIN (offset by sidebar on desktop) ===== --}}
-    <div class="md:ml-72 min-h-screen">
-        <main class="flex-1 flex flex-col min-w-0 page-fade-in">
-
-            {{-- Top Bar --}}
-            <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-outline-variant/10">
-                <div class="flex justify-between items-center px-4 sm:px-8 py-3 sm:py-4">
-                    <div class="flex items-center gap-3">
-                        {{-- Hamburger (mobile) --}}
-                        <button onclick="toggleSidebar()"
-                            class="md:hidden p-2 rounded-lg hover:bg-surface-container transition-colors">
-                            <span class="material-symbols-outlined text-on-surface">menu</span>
-                        </button>
-                        <h2 class="text-base sm:text-xl font-extrabold text-blue-800 font-headline">Antrean Verifikasi</h2>
-                    </div>
-                    <div class="flex items-center gap-2 sm:gap-3">
-                        <div class="text-right hidden sm:block">
-                            <p class="text-xs font-bold text-on-surface">{{ Auth::user()->nama_pengguna }}</p>
-                            <p class="text-[10px] text-on-surface-variant">BEM Verifikator</p>
-                        </div>
-                        <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold">
-                            {{ strtoupper(substr(Auth::user()->nama_pengguna ?? 'B', 0, 1)) }}
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <div class="p-4 sm:p-6 md:p-8 flex-1">
-
-                @if(session('success'))
-                <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl flex items-start gap-3">
-                    <span class="material-symbols-outlined text-green-600 shrink-0">check_circle</span>
-                    <p class="text-sm text-green-700 font-medium">{{ session('success') }}</p>
-                </div>
-                @endif
+<x-layouts.app-admin
+    :title="'Verifikasi BEM'"
+    :role="'bem'"
+    :activePage="'verifikasi'"
+    :portalName="'E-SKKM'"
+    :portalSub="'BEM Dashboard'"
+    :sidebarIcon="'account_balance'"
+>
 
                 {{-- Quick Stats --}}
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mb-6 sm:mb-10">
@@ -368,9 +201,6 @@
                     </div>
                     @endif
                 </section>
-            </div>
-        </main>
-    </div><!-- close md:ml-72 -->
 
     {{-- FAB --}}
     <button onclick="document.querySelector('.md\\:hidden .flex.gap-2 button:last-child, table tbody tr:first-child td:last-child button:last-child')?.click()"
@@ -575,52 +405,24 @@
         </div>
     </div>
 
+@push('scripts')
     <script>
         // ===== State =====
         let activeId   = null;
         let activeNama = null;
 
-        // ===== Sidebar toggle (mobile) =====
-        function toggleSidebar() {
-            const sidebar  = document.getElementById('mobile-sidebar-bem');
-            const overlay  = document.getElementById('sidebar-overlay');
-            const isOpen   = sidebar.classList.contains('open');
-            if (isOpen) {
-                sidebar.classList.remove('open');
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-                document.body.style.overflow = '';
-            } else {
-                sidebar.classList.add('open');
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        // ===== Modal =====
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
+        // ===== Close modal with check for other open modals =====
+        function closeBemModal(id) {
+            closeModal(id);
             const anyOpen = ['modal-detail','modal-setujui','modal-tolak']
                 .some(m => !document.getElementById(m).classList.contains('hidden'));
             if (!anyOpen) document.body.style.overflow = '';
         }
 
         ['modal-detail','modal-setujui','modal-tolak'].forEach(id => {
-            document.getElementById(id).addEventListener('click', function(e) {
-                if (e.target === this) closeModal(id);
+            document.getElementById(id)?.addEventListener('click', function(e) {
+                if (e.target === this) closeBemModal(id);
             });
-        });
-
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') {
-                ['modal-detail','modal-setujui','modal-tolak'].forEach(closeModal);
-            }
         });
 
         // ===== Counter karakter =====
@@ -665,7 +467,6 @@
             activeId   = id;
             activeNama = namaKegiatan;
             document.getElementById('s-nama-kegiatan').textContent = namaKegiatan ?? '-';
-            // ✅ FIX: pakai url() dengan path yang benar
             document.getElementById('form-setujui').action = "{{ url('bem/verifikasi') }}/" + id + "/approve";
             document.getElementById('catatan-approve').value = '';
             openModal('modal-setujui');
@@ -676,7 +477,6 @@
             activeId   = id;
             activeNama = namaKegiatan;
             document.getElementById('t-nama-kegiatan').textContent = namaKegiatan ?? '-';
-            // ✅ FIX: pakai url() dengan path yang benar (bukan nama route)
             document.getElementById('form-tolak').action   = "{{ url('bem/verifikasi') }}/" + id + "/reject";
             document.getElementById('tolak-sertifikat-id').value = id;
             const textarea  = document.getElementById('catatan-reject');
@@ -716,5 +516,6 @@
             textarea.value = val;
         });
     </script>
-</body>
-</html>
+@endpush
+
+</x-layouts.app-admin>

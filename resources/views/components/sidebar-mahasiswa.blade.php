@@ -5,6 +5,7 @@
         ['route' => 'mahasiswa.dashboard', 'icon' => 'dashboard', 'label' => 'Dashboard', 'key' => 'dashboard'],
         ['route' => 'sertifikat.create', 'icon' => 'cloud_upload', 'label' => 'Upload Sertifikat', 'key' => 'upload'],
         ['route' => 'sertifikat.index', 'icon' => 'assignment', 'label' => 'List Sertifikat', 'key' => 'list'],
+        ['route' => 'mahasiswa.events', 'icon' => 'campaign', 'label' => 'Berita Event', 'key' => 'events'],
         ['route' => 'panduan', 'icon' => 'menu_book', 'label' => 'Panduan', 'key' => 'panduan'],
     ];
 @endphp
