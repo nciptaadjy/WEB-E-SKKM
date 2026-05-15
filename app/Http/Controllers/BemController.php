@@ -40,7 +40,7 @@ class BemController extends Controller
     public function verifikasi()
     {
         $sertifikats = Sertifikat::where('status', 'pending')
-            ->with(['mahasiswa', 'kedudukan.subKegiatan.bidangKegiatan'])
+            ->with(['mahasiswa', 'kedudukan.subKegiatan.bidangKegiatan'])      
             ->orderBy('created_at', 'asc')
             ->paginate(15);
 

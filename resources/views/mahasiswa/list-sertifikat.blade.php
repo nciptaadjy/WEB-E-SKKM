@@ -174,7 +174,7 @@
     </div>
 
     {{-- Sertifikat Detail Modal --}}
-    <div id="modal-sertifikat-detail"
+    {{-- <div id="modal-sertifikat-detail"
         class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
         onclick="if(event.target===this)closeModal('modal-sertifikat-detail')">
         <div class="modal-box bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10 max-h-[92vh] flex flex-col">
@@ -191,7 +191,7 @@
                 </button>
             </div>
             <div class="overflow-y-auto flex-1 p-5 sm:p-6 space-y-5">
-                {{-- Kegiatan Info --}}
+                
                 <div>
                     <h4 class="text-lg font-bold text-on-surface font-headline" id="sd-nama-kegiatan">-</h4>
                     <div id="sd-status-wrap" class="mt-2"></div>
@@ -231,7 +231,7 @@
                     </div>
                 </div>
 
-                {{-- Catatan Reject --}}
+               
                 <div id="sd-reject-wrap" class="hidden">
                     <div class="p-3 bg-error-container/20 rounded-lg border border-error/10">
                         <p class="text-xs text-on-error-container leading-relaxed">
@@ -241,7 +241,7 @@
                     </div>
                 </div>
 
-                {{-- Link Sertifikat --}}
+                
                 <div id="sd-link-wrap" class="hidden">
                     <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Bukti Sertifikat</p>
                     <a id="sd-link" href="#" target="_blank"
@@ -264,7 +264,7 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 @push('scripts')
 <script>

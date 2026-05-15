@@ -67,6 +67,99 @@
 
 <body class="bg-surface text-on-surface min-h-screen">
     {{-- Sidebar Overlay (mobile) --}}
+    
+     <div id="modal-sertifikat-detail"
+        class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
+        onclick="if(event.target===this)closeModal('modal-sertifikat-detail')">
+        <div class="modal-box bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10 max-h-[92vh] flex flex-col">
+            <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-outline-variant/10 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-xl">description</span>
+                    </div>
+                    <h3 class="text-base font-extrabold text-on-surface font-headline">Detail Sertifikat</h3>
+                </div>
+                <button onclick="closeModal('modal-sertifikat-detail')"
+                    class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-xl">close</span>
+                </button>
+            </div>
+            <div class="overflow-y-auto flex-1 p-5 sm:p-6 space-y-5">
+                {{-- Kegiatan Info --}}
+                <div>
+                    <h4 class="text-lg font-bold text-on-surface font-headline" id="sd-nama-kegiatan">-</h4>
+                    <div id="sd-status-wrap" class="mt-2"></div>
+                </div>
+
+                <div>
+                    <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-3">Informasi Kegiatan</p>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Penyelenggara</p>
+                            <p class="text-sm font-semibold text-on-surface" id="sd-penyelenggara">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Tanggal</p>
+                            <p class="text-sm font-semibold text-on-surface" id="sd-tanggal">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Kedudukan</p>
+                            <p class="text-sm font-semibold text-on-surface" id="sd-kedudukan">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Bidang</p>
+                            <p class="text-sm font-semibold text-on-surface" id="sd-bidang">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Sub Kegiatan</p>
+                            <p class="text-sm font-semibold text-on-surface" id="sd-sub-kegiatan">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Tingkat</p>
+                            <p class="text-sm font-semibold text-on-surface capitalize" id="sd-tingkat">-</p>
+                        </div>
+                        <div class="col-span-2 p-3 bg-primary/5 rounded-xl border border-primary/15">
+                            <p class="text-[10px] text-primary font-bold mb-0.5">Poin SKKM</p>
+                            <p class="text-xl font-bold text-primary font-headline" id="sd-bobot">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Catatan Reject --}}
+                <div id="sd-reject-wrap" class="hidden">
+                    <div class="p-3 bg-error-container/20 rounded-lg border border-error/10">
+                        <p class="text-xs text-on-error-container leading-relaxed">
+                            <strong class="font-bold">Catatan Penolakan:</strong>
+                            <span id="sd-catatan-reject"></span>
+                        </p>
+                    </div>
+                </div>
+
+                {{-- Link Sertifikat --}}
+                <div id="sd-link-wrap" class="hidden">
+                    <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Bukti Sertifikat</p>
+                    <a id="sd-link" href="#" target="_blank"
+                        class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl hover:bg-primary/5 transition-colors group border border-outline-variant/20">
+                        <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-primary text-lg">link</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-semibold text-primary truncate" id="sd-link-text">-</p>
+                            <p class="text-[10px] text-on-surface-variant">Buka link sertifikat</p>
+                        </div>
+                        <span class="material-symbols-outlined text-outline text-sm group-hover:text-primary transition-colors">open_in_new</span>
+                    </a>
+                </div>
+            </div>
+            <div class="p-4 border-t border-outline-variant/10 bg-surface-container-low shrink-0">
+                <button onclick="closeModal('modal-sertifikat-detail')"
+                    class="w-full py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div id="sidebar-overlay"
         class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden"
         onclick="toggleMobileSidebar()"></div>

@@ -212,7 +212,7 @@
     </button>
 
     {{-- ===== MODAL DETAIL ===== --}}
-    <div id="modal-detail"
+    {{-- <div id="modal-detail"
         class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
         <div class="modal-box bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10 max-h-[92vh] flex flex-col">
             <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-outline-variant/10 shrink-0">
@@ -304,10 +304,10 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     {{-- ===== MODAL SETUJUI ===== --}}
-    <div id="modal-setujui"
+    {{-- <div id="modal-setujui"
         class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
         <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
             <form id="form-setujui" method="POST" action="">
@@ -346,10 +346,10 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> --}}
 
     {{-- ===== MODAL TOLAK ===== --}}
-    <div id="modal-tolak"
+    {{-- <div id="modal-tolak"
         class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
         <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
             <form id="form-tolak" method="POST" action="">
@@ -403,7 +403,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> --}}
 
 @push('scripts')
     <script>

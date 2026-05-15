@@ -63,6 +63,198 @@
 </head>
 
 <body class="bg-surface text-on-surface min-h-screen">
+
+    <div id="modal-detail"
+        class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="modal-box bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10 max-h-[92vh] flex flex-col">
+            <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-outline-variant/10 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-xl">description</span>
+                    </div>
+                    <h3 class="text-base font-extrabold text-on-surface font-headline">Detail Pengajuan</h3>
+                </div>
+                <button onclick="closeModal('modal-detail')"
+                    class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-xl">close</span>
+                </button>
+            </div>
+            <div class="overflow-y-auto flex-1 p-5 sm:p-6 space-y-5">
+                <div class="flex items-center gap-4 p-4 bg-surface-container-low rounded-xl">
+                    <div id="d-avatar" class="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-white font-bold text-base shrink-0">M</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-bold text-on-surface text-sm" id="d-nama">-</p>
+                        <p class="text-xs text-on-surface-variant" id="d-nim">-</p>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-3">Informasi Kegiatan</p>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <div class="col-span-2 p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Nama Kegiatan</p>
+                            <p class="text-sm font-semibold text-on-surface" id="d-kegiatan">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Penyelenggara</p>
+                            <p class="text-sm font-semibold text-on-surface" id="d-penyelenggara">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Bidang</p>
+                            <p class="text-sm font-semibold text-on-surface" id="d-bidang">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Sub Kegiatan</p>
+                            <p class="text-sm font-semibold text-on-surface" id="d-sub">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Kedudukan</p>
+                            <p class="text-sm font-semibold text-on-surface" id="d-kedudukan">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Tingkat</p>
+                            <p class="text-sm font-semibold text-on-surface capitalize" id="d-tingkat">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Tanggal</p>
+                            <p class="text-sm font-semibold text-on-surface" id="d-tanggal">-</p>
+                        </div>
+                        <div class="p-3 bg-primary/5 rounded-xl border border-primary/15">
+                            <p class="text-[10px] text-primary font-bold mb-0.5">Estimasi Poin</p>
+                            <p class="text-lg font-bold text-primary font-headline" id="d-bobot">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Bukti Sertifikat</p>
+                    <a id="d-link" href="#" target="_blank"
+                        class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl hover:bg-primary/5 transition-colors group border border-outline-variant/20">
+                        <div class="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-primary text-lg">link</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-xs font-semibold text-primary truncate" id="d-link-text">-</p>
+                            <p class="text-[10px] text-on-surface-variant" id="d-platform">-</p>
+                        </div>
+                        <span class="material-symbols-outlined text-outline text-sm group-hover:text-primary transition-colors">open_in_new</span>
+                    </a>
+                </div>
+            </div>
+            <div class="p-4 border-t border-outline-variant/10 bg-surface-container-low flex gap-2 sm:gap-3 shrink-0">
+                <button onclick="closeModal('modal-detail')"
+                    class="px-3 sm:px-4 py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-xs sm:text-sm hover:bg-surface-container transition-colors">
+                    Tutup
+                </button>
+                <button onclick="closeModal('modal-detail'); openTolakFromDetail()"
+                    class="flex-1 py-2.5 rounded-xl border-2 border-error/30 text-error font-bold text-xs sm:text-sm hover:bg-error/5 transition-all flex items-center justify-center gap-1 sm:gap-2">
+                    <span class="material-symbols-outlined text-base">cancel</span>
+                    Tolak
+                </button>
+                <button onclick="closeModal('modal-detail'); openSetujuiFromDetail()"
+                    class="flex-1 py-2.5 rounded-xl bg-secondary text-white font-bold text-xs sm:text-sm shadow-lg shadow-secondary/20 hover:opacity-90 transition-all flex items-center justify-center gap-1 sm:gap-2">
+                    <span class="material-symbols-outlined text-base">verified</span>
+                    Setujui
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-setujui"
+        class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
+            <form id="form-setujui" method="POST" action="">
+                @csrf
+                <div class="p-5 sm:p-6">
+                    <div class="flex flex-col items-center text-center mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-3">
+                            <span class="material-symbols-outlined text-secondary text-4xl"
+                                style="font-variation-settings:'FILL' 1">verified</span>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-on-surface font-headline">Setujui Pengajuan?</h3>
+                        <p class="text-sm text-on-surface-variant mt-1.5 max-w-xs">
+                            Sertifikat <strong class="text-on-surface" id="s-nama-kegiatan">-</strong>
+                            akan diteruskan ke verifikasi Kemahasiswaan.
+                        </p>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">
+                            Catatan <span class="font-normal normal-case text-outline">(opsional)</span>
+                        </label>
+                        <textarea id="catatan-approve" name="catatan_approve" rows="3"
+                            class="w-full p-3.5 text-sm bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all resize-none outline-none"
+                            placeholder="Contoh: Sertifikat sudah terverifikasi dengan baik."></textarea>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low p-4 flex gap-3">
+                    <button type="button" onclick="closeModal('modal-setujui')"
+                        class="flex-1 py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors font-headline">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 rounded-xl bg-secondary text-on-secondary font-bold text-sm shadow-lg shadow-secondary/20 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2 font-headline">
+                        <span class="material-symbols-outlined text-base">check</span>
+                        Ya, Setujui
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="modal-tolak"       
+        class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
+        <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
+            <form id="form-tolak" method="POST" action="">
+                @csrf
+                <input type="hidden" id="tolak-sertifikat-id" name="_sertifikat_id" value="">
+                <div class="p-5 sm:p-6">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-11 h-11 rounded-xl bg-error/10 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-error text-2xl">cancel</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold font-headline text-on-surface">Tolak Pengajuan</h3>
+                            <p class="text-xs text-on-surface-variant mt-0.5">Berikan alasan agar mahasiswa bisa memperbaiki.</p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-error/5 border border-error/15 rounded-xl mb-5">
+                        <p class="text-[10px] text-on-surface-variant mb-0.5">Menolak sertifikat:</p>
+                        <p class="text-sm font-bold text-on-surface" id="t-nama-kegiatan">-</p>
+                    </div>
+                    <div>
+                        <label for="catatan-reject"
+                            class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">
+                            Alasan Penolakan <span class="text-error">*</span>
+                        </label>
+                        <textarea id="catatan-reject" name="catatan_reject" rows="4" minlength="10" required
+                            oninput="hitungKarakter(this)"
+                            class="w-full p-4 text-sm bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-error/20 focus:border-error transition-all resize-none outline-none"
+                            placeholder="Contoh: Gambar sertifikat tidak terbaca jelas atau blur."></textarea>
+                        <div class="flex justify-between items-center mt-1.5">
+                            <p id="error-catatan" class="hidden text-xs text-error flex items-center gap-1">
+                                <span class="material-symbols-outlined text-sm">error</span>
+                                <span id="error-catatan-msg">Wajib diisi minimal 10 karakter.</span>
+                            </p>
+                            <p class="text-[10px] text-on-surface-variant ml-auto">
+                                <span id="char-count">0</span> karakter
+                                <span class="text-outline">(min. 10)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low p-4 flex gap-3 justify-end">
+                    <button type="button" onclick="closeModal('modal-tolak')"
+                        class="px-6 py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors font-headline">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="px-6 py-2.5 rounded-xl bg-error text-on-error font-bold text-sm shadow-lg shadow-error/20 hover:opacity-90 active:scale-95 transition-all flex items-center gap-2 font-headline">
+                        <span class="material-symbols-outlined text-base">cancel</span>
+                        Ya, Tolak
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
     {{-- Sidebar Overlay (mobile) --}}
     <div id="sidebar-overlay"
         class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden"
