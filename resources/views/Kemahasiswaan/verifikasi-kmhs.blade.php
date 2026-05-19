@@ -50,12 +50,10 @@
                         class="flex-1 py-2 rounded-lg bg-error/10 text-error text-xs font-bold hover:bg-error/20 transition-colors flex items-center justify-center gap-1">
                         <span class="material-symbols-outlined text-sm">cancel</span> Tolak
                     </button>
-                    <form action="{{ route('kemahasiswaan.approve', $sertifikat) }}" method="POST" class="flex-1">
-                        @csrf
-                        <button type="submit" class="w-full py-2 rounded-lg bg-secondary text-white text-xs font-bold hover:opacity-90 transition-all flex items-center justify-center gap-1">
-                            <span class="material-symbols-outlined text-sm">verified</span> Setujui
-                        </button>
-                    </form>
+                    <button onclick="openKmhsSetujui({{ $sertifikat->id }}, '{{ addslashes($sertifikat->nama_kegiatan) }}', {{ $sertifikat->bobot_snapshot }})"
+                        class="flex-1 py-2 rounded-lg bg-secondary text-white text-xs font-bold hover:opacity-90 transition-all flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-sm">verified</span> Setujui
+                    </button>
                 </div>
             </div>
             @empty
@@ -102,10 +100,8 @@
                             <div class="flex justify-end gap-2">
                                 <button onclick="openKmhsTolak({{ $sertifikat->id }}, '{{ addslashes($sertifikat->nama_kegiatan) }}')"
                                     class="px-4 py-2 rounded-lg border border-error text-error text-xs font-bold hover:bg-error-container transition-colors">Tolak</button>
-                                <form action="{{ route('kemahasiswaan.approve', $sertifikat) }}" method="POST" class="inline">
-                                    @csrf
-                                    <button type="submit" class="px-4 py-2 rounded-lg bg-secondary text-on-secondary text-xs font-bold hover:opacity-90 shadow-sm transition-all active:scale-95">Setujui</button>
-                                </form>
+                                <button onclick="openKmhsSetujui({{ $sertifikat->id }}, '{{ addslashes($sertifikat->nama_kegiatan) }}', {{ $sertifikat->bobot_snapshot }})"
+                                    class="px-4 py-2 rounded-lg bg-secondary text-on-secondary text-xs font-bold hover:opacity-90 shadow-sm transition-all active:scale-95">Setujui</button>
                             </div>
                         </td>
                     </tr>
@@ -126,6 +122,56 @@
         </div>
         @endif
     </section>
+
+    {{-- Modal Setujui Kemahasiswaan --}}
+    <div id="modal-kmhs-setujui"
+        class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
+        onclick="if(event.target===this)closeModal('modal-kmhs-setujui')">
+        <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
+            <form id="form-kmhs-setujui" method="POST" action="">
+                @csrf
+                <div class="p-5 sm:p-6">
+                    <div class="flex flex-col items-center text-center mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-3">
+                            <span class="material-symbols-outlined text-secondary text-4xl" style="font-variation-settings:'FILL' 1">verified</span>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-on-surface font-headline">Setujui Pengajuan?</h3>
+                        <p class="text-sm text-on-surface-variant mt-1.5 max-w-xs">
+                            Sertifikat <strong class="text-on-surface" id="ks-nama-kegiatan">-</strong>
+                            akan disetujui dan poin akan ditambahkan.
+                        </p>
+                    </div>
+                    <div class="mb-5">
+                        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Poin SKKM</label>
+                        <div class="flex items-center gap-3 p-3 bg-primary/5 rounded-xl border border-primary/15">
+                            <div class="flex-1">
+                                <p class="text-[10px] text-on-surface-variant mb-0.5">Poin Saat Ini</p>
+                                <p class="text-lg font-bold text-primary font-headline" id="ks-bobot-asal">0</p>
+                            </div>
+                            <div class="w-px h-10 bg-outline-variant/20"></div>
+                            <div class="flex-1">
+                                <label for="ks-bobot-override" class="text-[10px] text-secondary font-bold mb-0.5 block">Poin Ditetapkan</label>
+                                <input type="number" id="ks-bobot-override" name="bobot_override" step="0.5" min="0" max="100"
+                                    class="w-full text-lg font-bold text-secondary font-headline bg-transparent border-0 border-b-2 border-secondary/30 focus:border-secondary focus:ring-0 p-0 pb-0.5 outline-none" value="0">
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-on-surface-variant mt-1.5 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">info</span>
+                            Ubah poin jika diperlukan setelah mengecek sertifikat.
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low p-4 flex gap-3">
+                    <button type="button" onclick="closeModal('modal-kmhs-setujui')"
+                        class="flex-1 py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors">Batal</button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 rounded-xl bg-secondary text-on-secondary font-bold text-sm shadow-lg shadow-secondary/20 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-base">check</span> Ya, Setujui
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     {{-- Modal Tolak with catatan_reject --}}
     <div id="modal-kmhs-tolak"
@@ -172,6 +218,14 @@
 
 @push('scripts')
 <script>
+    function openKmhsSetujui(id, namaKegiatan, bobot) {
+        document.getElementById('ks-nama-kegiatan').textContent = namaKegiatan || '-';
+        document.getElementById('ks-bobot-asal').textContent = (bobot || 0) + ' Poin';
+        document.getElementById('ks-bobot-override').value = bobot || 0;
+        document.getElementById('form-kmhs-setujui').action = "{{ url('kemahasiswaan/verifikasi') }}/" + id + "/approve";
+        openModal('modal-kmhs-setujui');
+    }
+
     function openKmhsTolak(id, namaKegiatan) {
         document.getElementById('kt-nama-kegiatan').textContent = namaKegiatan || '-';
         document.getElementById('form-kmhs-tolak').action = "{{ url('kemahasiswaan/verifikasi') }}/" + id + "/reject";

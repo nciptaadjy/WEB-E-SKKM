@@ -172,9 +172,34 @@
                         <h3 class="text-xl font-extrabold text-on-surface font-headline">Setujui Pengajuan?</h3>
                         <p class="text-sm text-on-surface-variant mt-1.5 max-w-xs">
                             Sertifikat <strong class="text-on-surface" id="s-nama-kegiatan">-</strong>
-                            akan diteruskan ke verifikasi Kemahasiswaan.
+                            akan diteruskan ke tahap verifikasi selanjutnya.
                         </p>
                     </div>
+
+                    {{-- Ubah Poin --}}
+                    <div class="mb-5">
+                        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">
+                            Poin SKKM
+                        </label>
+                        <div class="flex items-center gap-3 p-3 bg-primary/5 rounded-xl border border-primary/15">
+                            <div class="flex-1">
+                                <p class="text-[10px] text-on-surface-variant mb-0.5">Poin Asal (dari Mahasiswa)</p>
+                                <p class="text-lg font-bold text-primary font-headline" id="s-bobot-asal">0</p>
+                            </div>
+                            <div class="w-px h-10 bg-outline-variant/20"></div>
+                            <div class="flex-1">
+                                <label for="s-bobot-override" class="text-[10px] text-secondary font-bold mb-0.5 block">Poin Ditetapkan</label>
+                                <input type="number" id="s-bobot-override" name="bobot_override" step="0.5" min="0" max="100"
+                                    class="w-full text-lg font-bold text-secondary font-headline bg-transparent border-0 border-b-2 border-secondary/30 focus:border-secondary focus:ring-0 p-0 pb-0.5 outline-none"
+                                    value="0">
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-on-surface-variant mt-1.5 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">info</span>
+                            Ubah poin jika diperlukan setelah mengecek sertifikat.
+                        </p>
+                    </div>
+
                     <div>
                         <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">
                             Catatan <span class="font-normal normal-case text-outline">(opsional)</span>
@@ -198,7 +223,6 @@
             </form>
         </div>
     </div>
-
 
     <div id="modal-tolak"       
         class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
@@ -255,6 +279,7 @@
             </form>
         </div>
     </div>
+    
     {{-- Sidebar Overlay (mobile) --}}
     <div id="sidebar-overlay"
         class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden"

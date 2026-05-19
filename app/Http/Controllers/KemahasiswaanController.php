@@ -64,12 +64,23 @@ class KemahasiswaanController extends Controller
     /**
      * Approve sertifikat (verifikasi final Kemahasiswaan)
      */
-    public function approve(Sertifikat $sertifikat)
+    public function approve(Request $request, Sertifikat $sertifikat)
     {
-        $sertifikat->update([
+        $request->validate([
+            'bobot_override' => 'nullable|numeric|min:0|max:100',
+        ]);
+
+        $updateData = [
             'status'           => 'approved',
             'verified_by_khms' => Auth::id(),
-        ]);
+        ];
+
+        // Jika Kemahasiswaan mengubah poin, update bobot_snapshot
+        if ($request->filled('bobot_override')) {
+            $updateData['bobot_snapshot'] = $request->bobot_override;
+        }
+
+        $sertifikat->update($updateData);
 
         $this->tambahPoin($sertifikat);
 

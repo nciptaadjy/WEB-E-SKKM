@@ -90,7 +90,7 @@
                                     Tolak
                                 </button>
                                 <button
-                                    onclick="openSetujui({{ $sertifikat->id }}, '{{ addslashes($sertifikat->nama_kegiatan) }}')"
+                                    onclick="openSetujui({{ $sertifikat->id }}, '{{ addslashes($sertifikat->nama_kegiatan) }}', {{ $sertifikat->bobot_snapshot }})"
                                     class="flex-1 py-2 rounded-lg bg-secondary text-white text-xs font-bold hover:opacity-90 transition-all flex items-center justify-center gap-1">
                                     <span class="material-symbols-outlined text-sm">verified</span>
                                     Setujui
@@ -175,7 +175,7 @@
                                                 Tolak
                                             </button>
                                             <button
-                                                onclick="openSetujui({{ $sertifikat->id }}, '{{ addslashes($sertifikat->nama_kegiatan) }}')"
+                                                onclick="openSetujui({{ $sertifikat->id }}, '{{ addslashes($sertifikat->nama_kegiatan) }}', {{ $sertifikat->bobot_snapshot }})"
                                                 class="px-3 py-1.5 rounded-lg bg-secondary text-white text-xs font-bold hover:opacity-90 shadow-sm transition-all active:scale-95 flex items-center gap-1">
                                                 <span class="material-symbols-outlined text-sm">verified</span>
                                                 Setujui
@@ -408,8 +408,9 @@
 @push('scripts')
     <script>
         // ===== State =====
-        let activeId   = null;
-        let activeNama = null;
+        let activeId    = null;
+        let activeNama  = null;
+        let activeBobot = 0;
 
         // ===== Close modal with check for other open modals =====
         function closeBemModal(id) {
@@ -440,8 +441,9 @@
 
         // ===== Modal Detail =====
         function openDetail(data) {
-            activeId   = data.id;
-            activeNama = data.nama_kegiatan;
+            activeId    = data.id;
+            activeNama  = data.nama_kegiatan;
+            activeBobot = data.bobot || 0;
             document.getElementById('d-avatar').textContent        = (data.nama ?? 'M').charAt(0).toUpperCase();
             document.getElementById('d-nama').textContent          = data.nama           ?? '-';
             document.getElementById('d-nim').textContent           = data.nim            ?? '-';
@@ -459,14 +461,17 @@
             openModal('modal-detail');
         }
 
-        function openSetujuiFromDetail() { openSetujui(activeId, activeNama); }
+        function openSetujuiFromDetail() { openSetujui(activeId, activeNama, activeBobot); }
         function openTolakFromDetail()   { openTolak(activeId, activeNama); }
 
         // ===== Modal Setujui =====
-        function openSetujui(id, namaKegiatan) {
+        function openSetujui(id, namaKegiatan, bobot) {
             activeId   = id;
             activeNama = namaKegiatan;
+            activeBobot = bobot || 0;
             document.getElementById('s-nama-kegiatan').textContent = namaKegiatan ?? '-';
+            document.getElementById('s-bobot-asal').textContent = (bobot || 0) + ' Poin';
+            document.getElementById('s-bobot-override').value = bobot || 0;
             document.getElementById('form-setujui').action = "{{ url('bem/verifikasi') }}/" + id + "/approve";
             document.getElementById('catatan-approve').value = '';
             openModal('modal-setujui');

@@ -52,12 +52,23 @@ class BemController extends Controller
     /**
      * Setujui sertifikat (BEM verifikasi tahap 1)
      */
-    public function approve(Sertifikat $sertifikat)
+    public function approve(Request $request, Sertifikat $sertifikat)
     {
-        $sertifikat->update([
+        $request->validate([
+            'bobot_override' => 'nullable|numeric|min:0|max:100',
+        ]);
+
+        $updateData = [
             'status' => 'verified_bem',
             'verified_by_bem' => Auth::id(),
-        ]);
+        ];
+
+        // Jika BEM mengubah poin, update bobot_snapshot
+        if ($request->filled('bobot_override')) {
+            $updateData['bobot_snapshot'] = $request->bobot_override;
+        }
+
+        $sertifikat->update($updateData);
 
         return redirect()->back()->with('success', 'Sertifikat berhasil diverifikasi.');
     }
