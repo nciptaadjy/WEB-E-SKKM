@@ -74,7 +74,8 @@
                                         sub_kegiatan: '{{ addslashes($sertifikat->kedudukan?->subKegiatan?->nama_sub ?? '-') }}',
                                         kedudukan: '{{ addslashes($sertifikat->kedudukan?->nama_kedudukan ?? '-') }}',
                                         tingkat: '{{ $sertifikat->tingkat ?? '-' }}',
-                                        tanggal: '{{ $sertifikat->tanggal_kegiatan ?? '-' }}',
+                                        tanggal: '{{ $sertifikat->tanggal_kegiatan ? $sertifikat->tanggal_kegiatan->format('Y-m-d') : '-' }}',
+                                        tanggal_pengajuan: '{{ $sertifikat->created_at->format('Y-m-d') }}',
                                         bobot: {{ $sertifikat->bobot_snapshot }},
                                         link: '{{ $sertifikat->link_sertifikat ?? '' }}',
                                         platform: '{{ $sertifikat->platform_sertifikat ?? 'drive' }}'
@@ -159,7 +160,8 @@
                                                     sub_kegiatan: '{{ addslashes($sertifikat->kedudukan?->subKegiatan?->nama_sub ?? '-') }}',
                                                     kedudukan: '{{ addslashes($sertifikat->kedudukan?->nama_kedudukan ?? '-') }}',
                                                     tingkat: '{{ $sertifikat->tingkat ?? '-' }}',
-                                                    tanggal: '{{ $sertifikat->tanggal_kegiatan ?? '-' }}',
+                                                    tanggal: '{{ $sertifikat->tanggal_kegiatan ? $sertifikat->tanggal_kegiatan->format('Y-m-d') : '-' }}',
+                                                    tanggal_pengajuan: '{{ $sertifikat->created_at->format('Y-m-d') }}',
                                                     bobot: {{ $sertifikat->bobot_snapshot }},
                                                     link: '{{ $sertifikat->link_sertifikat ?? '' }}',
                                                     platform: '{{ $sertifikat->platform_sertifikat ?? 'drive' }}'
@@ -203,16 +205,16 @@
                 </section>
 
     {{-- FAB --}}
-    <button onclick="document.querySelector('.md\\:hidden .flex.gap-2 button:last-child, table tbody tr:first-child td:last-child button:last-child')?.click()"
+    {{-- <button onclick="document.querySelector('.md\\:hidden .flex.gap-2 button:last-child, table tbody tr:first-child td:last-child button:last-child')?.click()"
         class="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary-container text-on-primary-container shadow-2xl flex items-center justify-center hover:scale-105 transition-transform group z-30">
         <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
         <span class="absolute right-full mr-4 bg-on-surface text-surface px-3 py-1 rounded text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
             Verifikasi Cepat
         </span>
-    </button>
+    </button> --}}
 
     {{-- ===== MODAL DETAIL ===== --}}
-    {{-- <div id="modal-detail"
+    <div id="modal-detail"
         class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
         <div class="modal-box bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10 max-h-[92vh] flex flex-col">
             <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-outline-variant/10 shrink-0">
@@ -263,8 +265,12 @@
                             <p class="text-sm font-semibold text-on-surface capitalize" id="d-tingkat">-</p>
                         </div>
                         <div class="p-3 bg-surface-container-low rounded-xl">
-                            <p class="text-[10px] text-on-surface-variant mb-0.5">Tanggal</p>
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Tanggal Event</p>
                             <p class="text-sm font-semibold text-on-surface" id="d-tanggal">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Tanggal Pengajuan</p>
+                            <p class="text-sm font-semibold text-on-surface" id="d-tanggal-pengajuan">-</p>
                         </div>
                         <div class="p-3 bg-primary/5 rounded-xl border border-primary/15">
                             <p class="text-[10px] text-primary font-bold mb-0.5">Estimasi Poin</p>
@@ -304,10 +310,10 @@
                 </button>
             </div>
         </div>
-    </div> --}}
+    </div>
 
     {{-- ===== MODAL SETUJUI ===== --}}
-    {{-- <div id="modal-setujui"
+    <div id="modal-setujui"
         class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
         <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
             <form id="form-setujui" method="POST" action="">
@@ -346,10 +352,10 @@
                 </div>
             </form>
         </div>
-    </div> --}}
+    </div>
 
     {{-- ===== MODAL TOLAK ===== --}}
-    {{-- <div id="modal-tolak"
+    <div id="modal-tolak"
         class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
         <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
             <form id="form-tolak" method="POST" action="">
@@ -403,7 +409,7 @@
                 </div>
             </form>
         </div>
-    </div> --}}
+    </div>
 
 @push('scripts')
     <script>
@@ -454,6 +460,7 @@
             document.getElementById('d-kedudukan').textContent     = data.kedudukan      ?? '-';
             document.getElementById('d-tingkat').textContent       = (data.tingkat ?? '-').replace(/_/g, ' ');
             document.getElementById('d-tanggal').textContent       = data.tanggal        ?? '-';
+            document.getElementById('d-tanggal-pengajuan').textContent = data.tanggal_pengajuan ?? '-';
             document.getElementById('d-bobot').textContent         = (data.bobot ?? 0) + ' Poin';
             document.getElementById('d-link').href                 = data.link           || '#';
             document.getElementById('d-link-text').textContent     = data.link           || 'Tidak ada link';

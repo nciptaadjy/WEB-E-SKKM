@@ -19,11 +19,10 @@ class SertifikatController extends Controller
     {
         $mahasiswaId = session('mahasiswa_id');
 
-        // Statistik (query all for counts)
-        $allSertifikats = Sertifikat::where('mahasiswa_id', $mahasiswaId)->get();
-        $totalPoin = $allSertifikats->where('status', 'approved')->sum('bobot_snapshot');
-        $totalApproved = $allSertifikats->where('status', 'approved')->count();
-        $totalPending = $allSertifikats->whereIn('status', ['pending', 'verified_bem'])->count();
+        // Statistik (Best Practice: Query agregasi di database, bukan load semua ke memori)
+        $totalPoin = Sertifikat::where('mahasiswa_id', $mahasiswaId)->where('status', 'approved')->sum('bobot_snapshot');
+        $totalApproved = Sertifikat::where('mahasiswa_id', $mahasiswaId)->where('status', 'approved')->count();
+        $totalPending = Sertifikat::where('mahasiswa_id', $mahasiswaId)->whereIn('status', ['pending', 'verified_bem', 'revision'])->count();
 
         // Paginated list
         $sertifikats = Sertifikat::where('mahasiswa_id', $mahasiswaId)
@@ -134,6 +133,11 @@ class SertifikatController extends Controller
             ->get();
 
         return view('mahasiswa.panduan.bobot-skkm', compact('bidangKegiatans'));
+    }
+
+    public function alurPengajuan()
+    {
+        return view('mahasiswa.panduan.alur-pengajuan');
     }
 
     // ══════════════════════════════════════════════

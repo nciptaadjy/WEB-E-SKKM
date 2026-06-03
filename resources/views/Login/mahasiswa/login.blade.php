@@ -4,11 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Login Mahasiswa — E-SKKM</title>
+    <meta name="description" content="Sistem Kredit Kegiatan Mahasiswa ITB STIKOM Bali - Login menggunakan akun Microsoft kampus">
     <link
         href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -96,25 +95,22 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .page-fade-in { animation: pageFadeIn 0.5s ease both; }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 94, 164, 0.3); }
+            50% { box-shadow: 0 0 0 12px rgba(0, 94, 164, 0); }
+        }
+        .pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
     </style>
 </head>
 
 <body class="bg-surface font-body text-on-surface min-h-screen flex flex-col page-fade-in">
-    <!-- TopNavBar - Suppressed for Login context as per Shell Visibility Rules,
-         but UI asks for consistency. Since Login is Transactional/Focused,
-         we prioritize content but include a minimal Brand anchor. -->
     <header
         class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-4 max-w-screen-2xl mx-auto bg-[#f6fafe]/80 backdrop-blur-xl">
         <div class="flex items-center gap-2">
             <span class="text-xl font-bold text-[#005ea4] tracking-tighter font-headline" style="">E-SKKM</span>
         </div>
         <div class="hidden md:flex gap-8 items-center">
-            <a class="text-slate-600 font-medium hover:text-[#005ea4] transition-all duration-300 font-headline"
-                href="#" style="">l</a>
-            <a class="text-slate-600 font-medium hover:text-[#005ea4] transition-all duration-300 font-headline"
-                href="#" style=""><br></a>
-            <a class="text-slate-600 font-medium hover:text-[#005ea4] transition-all duration-300 font-headline"
-                href="#" style=""><br></a>
         </div>
     </header>
     <main class="grow flex items-center justify-center pt-16">
@@ -134,7 +130,7 @@
                 <div class="relative z-10 space-y-8">
                     <div class="w-64 h-64 mx-auto flex items-center justify-center bg-white rounded-xl p-8 shadow-2xl">
                         <img alt="STIKOM Bali Logo" class="w-full h-full object-contain"
-                            src="https://lh3.googleusercontent.com/aida/ADBb0uiOdFBw2_C2OPT5vNNkYZXHXvllSRdkvaMVVlLI3p35E7lRU2ZZeHhakC_Lry9l6r45Qkels7gqB1L3rGfLEyCYBM1yqLhIV4u3TU0Gq9mIc1wIKxJkYFHKUwnrSnn-IQiNe5jO54xLbnZ29Y2EfqRU83fTt6RyL9z44dZ3453UBq9bxjBVE9NTCjOHoVqMFUzwtTlHpicl-XGXBgrt8c4I_bSY-IpsyHs-Cs1kIRhUVCwfP-IWfqSs1WX7HN41yOC5_Je_MGkp9Q"
+                            src="{{ asset('storage/image/STIKOM.png') }}"
                             style="">
                     </div>
                     <div class="space-y-2">
@@ -145,83 +141,83 @@
                     </div>
                 </div>
             </div>
-            <!-- Right Panel: Login Form -->
+            <!-- Right Panel: Login via Microsoft -->
             <div class="flex flex-col justify-center p-8 md:p-16 lg:p-24 bg-surface-container-lowest">
                 <div class="max-w-sm w-full mx-auto space-y-8">
                     <div class="space-y-2">
                         <h1 class="text-2xl md:text-3xl font-headline font-bold text-on-surface" style="">Masuk
                             Akun Mahasiswa</h1>
-                        <p class="text-on-surface-variant text-sm font-body" style="">Gunakan kredensial Mahasiswa
-                            Anda untuk mengakses dasbor Mahasiswa.</p>
+                        <p class="text-on-surface-variant text-sm font-body" style="">Gunakan akun Microsoft kampus Anda untuk mengakses sistem E-SKKM.</p>
                     </div>
+
                     @if($errors->has('login'))
                     <div class="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
                         <span class="material-symbols-outlined text-red-600 text-lg mt-0.5">error</span>
                         <p class="text-sm text-red-700 font-medium">{{ $errors->first('login') }}</p>
                     </div>
                     @endif
-                    <form action="{{ route('login.authenticate') }}" method="POST" class="space-y-5">
-                        @csrf
-                        <div class="space-y-2">
-                            <label class="text-xs font-semibold uppercase tracking-wider text-outline font-label"
-                                for="email" style="">NIM</label>
-                            <div class="relative">
-                                <span
-                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg"
-                                    style="">mail</span>
-                                <input
-                                    class="w-full pl-10 pr-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary transition-all font-body text-sm text-on-surface placeholder:text-outline/50"
-                                    id="nim" placeholder="2105101001" type="text" name="nim" value="{{ old('nim') }}">
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-xs font-semibold uppercase tracking-wider text-outline font-label"
-                                for="password" style="">Password</label>
-                            <div class="relative">
-                                <span
-                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg"
-                                    style="">lock</span>
-                                <input
-                                    class="w-full pl-10 pr-10 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary transition-all font-body text-sm text-on-surface placeholder:text-outline/50"
-                                    id="password" placeholder="••••••••" type="password" name="password">
-                                <button
-                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-primary"
-                                    type="button" style="">
-                                    <span class="material-symbols-outlined text-lg" style="">visibility</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between py-2">
-                            <label class="flex items-center gap-2 cursor-pointer group" style="">
-                                <input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary/20"
-                                    type="checkbox">
-                                <span
-                                    class="text-xs text-on-surface-variant font-medium group-hover:text-primary transition-colors"
-                                    style="">Ingat Saya</span>
-                            </label>
-                            <a class="text-xs text-primary font-semibold hover:underline" href="#"
-                                style="">Lupa Kata Sandi?</a>
-                        </div>
-                        <button
-                            class="w-full bg-primary hover:bg-on-primary-fixed-variant text-on-primary font-headline font-bold py-3.5 rounded-lg shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
-                            type="submit" style="">
-                            Masuk Ke Sistem
-                        </button>
-                    </form>
-                    {{-- <div class="pt-8 flex flex-col items-center gap-4">
+
+                    <!-- Microsoft Login Button -->
+                    <div class="space-y-5">
+                        <a href="{{ route('login.microsoft') }}"
+                            class="w-full flex items-center justify-center gap-3 bg-[#2F2F2F] hover:bg-[#1a1a1a] text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-[0.98] pulse-glow">
+                            <!-- Microsoft Logo -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+                                <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+                                <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+                                <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+                                <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+                            </svg>
+                            <span class="text-sm">Masuk dengan Microsoft</span>
+                        </a>
+
                         <div class="flex items-center w-full gap-4">
                             <div class="h-[1px] flex-grow bg-outline-variant opacity-30"></div>
-                            <span class="text-[10px] uppercase tracking-widest text-outline font-label"
-                                style="">Bantuan Teknis</span>
+                            <span class="text-[10px] uppercase tracking-widest text-outline font-label">Info</span>
                             <div class="h-[1px] flex-grow bg-outline-variant opacity-30"></div>
-                        </div> --}}
-                        <div class="pt-4 text-center">
-                            <a href="{{ route('login.admin') }}" class="text-xs text-primary font-semibold hover:underline">Login sebagai Admin (BEM/Ormawa/Kemahasiswaan) →</a>
                         </div>
-                        <div class="mt-4 p-3 bg-surface-container-low rounded-lg border border-outline-variant/10">
-                            <p class="text-[10px] font-bold text-outline uppercase tracking-wider mb-1">Demo</p>
-                            <p class="text-xs text-on-surface-variant">NIM: <span class="font-semibold">2105101001</span> / Pass: <span class="font-semibold">password</span></p>
+
+                        <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/10 space-y-3">
+                            <div class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-primary text-base mt-0.5">school</span>
+                                <p class="text-xs text-on-surface-variant leading-relaxed">
+                                    Gunakan <strong class="text-on-surface">akun Microsoft kampus</strong> Anda (email @stikom-bali.ac.id) untuk login ke sistem.
+                                </p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-secondary text-base mt-0.5">shield</span>
+                                <p class="text-xs text-on-surface-variant leading-relaxed">
+                                    Autentikasi aman melalui <strong class="text-on-surface">Microsoft SSO</strong>. Data Anda terlindungi.
+                                </p>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <span class="material-symbols-outlined text-primary text-base mt-0.5">bolt</span>
+                                <p class="text-xs text-on-surface-variant leading-relaxed">
+                                    Akun otomatis terhubung — tidak perlu registrasi manual.
+                                </p>
+                            </div>
                         </div>
+
+                        {{-- DUMMY LOGIN FOR DEVELOPMENT --}}
+                        @if(config('app.env') === 'local')
+                        <div class="mt-8 p-4 border border-dashed border-amber-300 bg-amber-50 rounded-xl relative">
+                            <span class="absolute -top-3 left-4 bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded border border-amber-200">DEVELOPMENT ONLY</span>
+                            <form action="{{ route('login.dummy') }}" method="POST" class="space-y-3 mt-2">
+                                @csrf
+                                <div>
+                                    <label class="block text-xs font-bold text-amber-800 mb-1">Login Dummy (NIM Mahasiswa)</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" name="nim" required placeholder="Masukkan NIM..." value="22003001" class="w-full text-sm p-2 rounded bg-white border border-amber-200 focus:ring-amber-500">
+                                        <button type="submit" class="bg-amber-600 text-white px-4 py-2 rounded text-xs font-bold whitespace-nowrap hover:bg-amber-700">Masuk</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="pt-4 text-center">
+                        <a href="{{ route('login.admin') }}" class="text-xs text-primary font-semibold hover:underline">Login sebagai Admin (BEM/Ormawa/Kemahasiswaan) →</a>
                     </div>
                 </div>
             </div>
@@ -229,17 +225,7 @@
     </main>
     <!-- Footer Component -->
     <footer class="w-full py-8 mt-auto bg-[#f6fafe] dark:bg-slate-950">
-        <div class="flex flex-col md:flex-row justify-between items-center px-12 w-full gap-4">
-            {{-- <p class="font-['Inter'] text-sm text-slate-500 dark:text-slate-500" style="">© 2024 University
-                Academic Activity System. All rights reserved.</p> --}}
-            {{-- <div class="flex gap-6">
-                <a class="text-slate-500 dark:text-slate-500 hover:text-[#005ea4] font-['Inter'] text-sm transition-opacity hover:opacity-80"
-                    href="#" style="">Privacy</a>
-                <a class="text-slate-500 dark:text-slate-500 hover:text-[#005ea4] font-['Inter'] text-sm transition-opacity hover:opacity-80"
-                    href="#" style="">Terms</a>
-                <a class="text-slate-500 dark:text-slate-500 hover:text-[#005ea4] font-['Inter'] text-sm transition-opacity hover:opacity-80"
-                    href="#" style="">Institutional Ethics</a>
-            </div> --}}
+        <div class="flex flex-col md:flex-row justify-content items-center px-12 w-full gap-4">
             <div class="font-['Manrope'] font-bold text-slate-900 dark:text-slate-100" style="">Kemahasiswaan ITB STIKOM Bali
             </div>
         </div>

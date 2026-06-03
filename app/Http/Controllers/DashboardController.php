@@ -19,14 +19,13 @@ class DashboardController extends Controller
         $mahasiswaId = session('mahasiswa_id');
         $mahasiswa = Mahasiswa::find($mahasiswaId);
 
-        // Statistik sertifikat
-        $sertifikats = Sertifikat::where('mahasiswa_id', $mahasiswaId)->get();
-        $totalApproved = $sertifikats->where('status', 'approved')->count();
-        $totalPending = $sertifikats->whereIn('status', ['pending', 'verified_bem'])->count();
-        $totalRejected = $sertifikats->where('status', 'rejected')->count();
+        // Statistik sertifikat (Best Practice: Agregasi langsung di Database, bukan dari memory/Collection)
+        $totalApproved = Sertifikat::where('mahasiswa_id', $mahasiswaId)->where('status', 'approved')->count();
+        $totalPending = Sertifikat::where('mahasiswa_id', $mahasiswaId)->whereIn('status', ['pending', 'verified_bem', 'revision'])->count();
+        $totalRejected = Sertifikat::where('mahasiswa_id', $mahasiswaId)->where('status', 'rejected')->count();
 
-        // Total poin (hanya dari sertifikat yang approved)
-        $totalPoin = $sertifikats->where('status', 'approved')->sum('bobot_snapshot');
+        // Total poin (Agregasi SUM di level Database)
+        $totalPoin = Sertifikat::where('mahasiswa_id', $mahasiswaId)->where('status', 'approved')->sum('bobot_snapshot');
 
         // Progress per bidang kegiatan
         $bidangKegiatans = BidangKegiatan::where('is_active', true)->get();
@@ -61,6 +60,14 @@ class DashboardController extends Controller
             ->take(3)
             ->get();
 
+        // Pengajuan yang masih dalam proses (real-time tracking)
+        $inProgressSertifikats = Sertifikat::where('mahasiswa_id', $mahasiswaId)
+            ->whereIn('status', ['pending', 'verified_bem', 'revision'])
+            ->with(['kedudukan.subKegiatan.bidangKegiatan', 'verifierBem', 'verifierKhms'])
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
         return view('mahasiswa.dashboard-mahasiswa', compact(
             'mahasiswa',
             'totalApproved',
@@ -70,7 +77,7 @@ class DashboardController extends Controller
             'progressPerBidang',
             'events',
             'recentSertifikats',
-            'sertifikats'
+            'inProgressSertifikats'
         ));
     }
 

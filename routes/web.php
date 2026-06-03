@@ -13,9 +13,11 @@ use App\Http\Controllers\OrmawaController;
 // LOGIN ROUTES
 // ══════════════════════════════════════════════
 
-// Mahasiswa Login
+// Mahasiswa Login (Microsoft OAuth)
 Route::get('/', [LoginController::class, 'showLoginMahasiswa'])->name('login');
-Route::post('/login', [LoginController::class, 'authenticateMahasiswa'])->name('login.authenticate');
+Route::get('/auth/microsoft', [LoginController::class, 'redirectToMicrosoft'])->name('login.microsoft');
+Route::get('/auth/microsoft/callback', [LoginController::class, 'handleMicrosoftCallback'])->name('login.microsoft.callback');
+Route::post('/login/dummy', [LoginController::class, 'dummyLogin'])->name('login.dummy'); // For development only
 Route::post('/logout', [LoginController::class, 'logoutMahasiswa'])->name('logout');
 
 // Admin Login (BEM / Ormawa / Kemahasiswaan)
@@ -41,6 +43,7 @@ Route::middleware('mahasiswa.auth')->prefix('mahasiswa')->group(function () {
     Route::get('/panduan', [SertifikatController::class, 'panduan'])->name('panduan');
     Route::get('/mahasiswa/panduan/tentang-skkm', [SertifikatController::class, 'tentangSkkm'])->name('panduan.tentang-skkm');
     Route::get('/mahasiswa/panduan/bobot-skkm', [SertifikatController::class, 'bobotSkkm'])->name('panduan.bobot-skkm');
+    Route::get('/mahasiswa/panduan/alur-pengajuan', [SertifikatController::class, 'alurPengajuan'])->name('panduan.alur-pengajuan');
 
     // API: Ambil sub kegiatan berdasarkan bidang
     Route::get('/api/sub-kegiatan/{bidangId}', [SertifikatController::class, 'getSubKegiatan'])->name('api.sub-kegiatan');
@@ -81,11 +84,14 @@ Route::middleware(['auth', 'role:kemahasiswaan'])->prefix('kemahasiswaan')->grou
 
     // Batch Penomoran Approval
     Route::get('/batch-penomoran', [KemahasiswaanController::class, 'batchPenomoran'])->name('kemahasiswaan.batch');
+    Route::get('/batch-penomoran/{batch}', [KemahasiswaanController::class, 'showBatchDetail'])->name('kemahasiswaan.batch.show');
     Route::post('/batch-penomoran/{batch}/approve', [KemahasiswaanController::class, 'approveBatch'])->name('kemahasiswaan.batch.approve');
+    Route::post('/batch-penomoran/{batch}/revisi', [KemahasiswaanController::class, 'revisiBatch'])->name('kemahasiswaan.batch.revisi');
     Route::post('/batch-penomoran/{batch}/reject', [KemahasiswaanController::class, 'rejectBatch'])->name('kemahasiswaan.batch.reject');
+    Route::get('/batch-penomoran/{batch}/download', [KemahasiswaanController::class, 'downloadBatch'])->name('kemahasiswaan.batch.download');
 
     // Point Management
-    Route::get('/manage-point', [KemahasiswaanController::class, 'managePoint'])->name('kemahasiswaan.point');
+    Route::get('/manage-point/{bidang?}', [KemahasiswaanController::class, 'managePoint'])->name('kemahasiswaan.point');
     Route::post('/bobot/{bobot}/update', [KemahasiswaanController::class, 'updateBobot'])->name('kemahasiswaan.bobot.update');
     Route::post('/bidang/{bidang}/update', [KemahasiswaanController::class, 'updateBidang'])->name('kemahasiswaan.bidang.update');
     Route::post('/bidang', [KemahasiswaanController::class, 'storeBidang'])->name('kemahasiswaan.bidang.store');
@@ -93,6 +99,10 @@ Route::middleware(['auth', 'role:kemahasiswaan'])->prefix('kemahasiswaan')->grou
     Route::post('/sub-kegiatan', [KemahasiswaanController::class, 'storeSubKegiatan'])->name('kemahasiswaan.sub.store');
     Route::post('/sub-kegiatan/{sub}/update', [KemahasiswaanController::class, 'updateSubKegiatan'])->name('kemahasiswaan.sub.update');
     Route::delete('/sub-kegiatan/{sub}', [KemahasiswaanController::class, 'deleteSubKegiatan'])->name('kemahasiswaan.sub.delete');
+
+    Route::post('/kedudukan', [KemahasiswaanController::class, 'storeKedudukan'])->name('kemahasiswaan.kedudukan.store');
+    Route::post('/kedudukan/{kedudukan}/update', [KemahasiswaanController::class, 'updateKedudukan'])->name('kemahasiswaan.kedudukan.update');
+    Route::delete('/kedudukan/{kedudukan}', [KemahasiswaanController::class, 'deleteKedudukan'])->name('kemahasiswaan.kedudukan.delete');
 });
 
 
@@ -114,5 +124,10 @@ Route::middleware(['auth', 'role:ormawa'])->prefix('ormawa')->group(function () 
 
     // Batch Penomoran
     Route::get('/batch-penomoran', [OrmawaController::class, 'batchPenomoran'])->name('ormawa.batch');
+    Route::get('/batch-penomoran/create', [OrmawaController::class, 'createBatch'])->name('ormawa.batch.create');
     Route::post('/batch-penomoran', [OrmawaController::class, 'storeBatchPenomoran'])->name('ormawa.batch.store');
+    Route::get('/batch-penomoran/{batch}', [OrmawaController::class, 'showBatchDetail'])->name('ormawa.batch.show');
+    Route::put('/batch-penomoran/{batch}', [OrmawaController::class, 'updateBatch'])->name('ormawa.batch.update');
+    Route::get('/batch-penomoran/{batch}/download', [OrmawaController::class, 'downloadBatch'])->name('ormawa.batch.download');
+    Route::post('/batch-penomoran/parse-csv', [OrmawaController::class, 'parseCsvPeserta'])->name('ormawa.batch.parse-csv');
 });

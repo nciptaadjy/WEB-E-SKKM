@@ -61,6 +61,7 @@ class BemController extends Controller
         $updateData = [
             'status' => 'verified_bem',
             'verified_by_bem' => Auth::id(),
+            'verified_bem_at' => now(),
         ];
 
         // Jika BEM mengubah poin, update bobot_snapshot

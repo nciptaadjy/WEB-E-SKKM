@@ -21,48 +21,64 @@
     </section>
 
     {{-- Steps Grid --}}
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <div class="bg-white p-5 sm:p-6 md:p-8 rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-3 sm:gap-4">
             <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg sm:text-xl">1</div>
-            <h3 class="text-lg sm:text-xl font-bold text-on-surface font-headline">Registrasi Sertifikat</h3>
+            <h3 class="text-lg sm:text-xl font-bold text-on-surface font-headline">Upload</h3>
             <div class="space-y-3">
-                <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">Ikuti langkah-langkah berikut untuk mengajukan poin baru:</p>
+                <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">Pengajuan sertifikat kegiatan Anda.</p>
                 <ul class="text-xs text-on-surface-variant space-y-2 list-decimal list-inside">
-                    <li><strong>Login:</strong> Akses akun mahasiswa Anda.</li>
-                    <li><strong>Upload:</strong> Pilih file PDF/JPG (Maks. 2MB).</li>
-                    <li><strong>Detail:</strong> Isi nama kegiatan, tanggal, dan kategori.</li>
-                    <li><strong>Submit:</strong> Klik 'Kirim' untuk memulai verifikasi.</li>
+                    <li>Pilih file PDF/JPG (Maks. 2MB).</li>
+                    <li>Isi nama kegiatan, tanggal, dan tingkat.</li>
+                    <li>Klik 'Kirim' untuk antre verifikasi.</li>
                 </ul>
             </div>
             <div class="mt-auto pt-3 sm:pt-4 border-t border-outline-variant/10">
                 <a href="{{ route('sertifikat.create') }}" class="text-primary font-semibold text-sm flex items-center gap-1 hover:underline">
-                    Mulai Upload <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    Upload Baru <span class="material-symbols-outlined text-sm">arrow_forward</span>
                 </a>
             </div>
         </div>
+
         <div class="bg-white p-5 sm:p-6 md:p-8 rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-3 sm:gap-4">
             <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg sm:text-xl">2</div>
-            <h3 class="text-lg sm:text-xl font-bold text-on-surface font-headline">Proses Verifikasi</h3>
+            <h3 class="text-lg sm:text-xl font-bold text-on-surface font-headline">Verif BEM</h3>
             <div class="space-y-3">
-                <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">Tim Kurator akan meninjau berkas Anda dalam <strong>3-5 hari kerja</strong>. Status berkas:</p>
+                <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">Peninjauan tahap pertama oleh BEM.</p>
+                <p class="text-xs text-on-surface-variant leading-relaxed">
+                    BEM bertugas memastikan keaslian dokumen dan kesesuaian kategori kegiatan.
+                </p>
+                <div class="flex items-start gap-2 mt-2"><span class="mt-1 px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded text-[9px] font-bold shrink-0">VERIF BEM</span><p class="text-[11px] text-on-surface-variant">Lolos verifikasi awal.</p></div>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 sm:p-6 md:p-8 rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-3 sm:gap-4">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg sm:text-xl">3</div>
+            <h3 class="text-lg sm:text-xl font-bold text-on-surface font-headline">Verif KMHS</h3>
+            <div class="space-y-3">
+                <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">Peninjauan akhir oleh Kemahasiswaan.</p>
+                <p class="text-xs text-on-surface-variant leading-relaxed">
+                    KMHS memberikan poin resmi, menolak, atau meminta revisi jika ada kesalahan pengisian form.
+                </p>
+                <div class="flex items-start gap-2 mt-2"><span class="mt-1 px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded text-[9px] font-bold shrink-0">REVISI</span><p class="text-[11px] text-on-surface-variant">Kemahasiswaan meminta perbaikan data.</p></div>
+            </div>
+        </div>
+
+        <div class="bg-white p-5 sm:p-6 md:p-8 rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-3 sm:gap-4">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg sm:text-xl">4</div>
+            <h3 class="text-lg sm:text-xl font-bold text-on-surface font-headline">Selesai</h3>
+            <div class="space-y-3">
+                <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">Sertifikat diproses.</p>
                 <div class="space-y-2">
-                    <div class="flex items-start gap-2"><span class="mt-1 px-1.5 py-0.5 bg-yellow-100 text-yellow-800 rounded text-[9px] font-bold shrink-0">PENDING</span><p class="text-[11px] text-on-surface-variant">Berkas sedang menunggu antrean peninjauan petugas.</p></div>
-                    <div class="flex items-start gap-2"><span class="mt-1 px-1.5 py-0.5 bg-red-100 text-red-800 rounded text-[9px] font-bold shrink-0">REJECTED</span><p class="text-[11px] text-on-surface-variant">Berkas ditolak karena data tidak sesuai atau gambar tidak jelas.</p></div>
+                    <div class="flex items-start gap-2"><span class="mt-1 px-1.5 py-0.5 bg-green-100 text-green-800 rounded text-[9px] font-bold shrink-0">APPROVED</span><p class="text-[11px] text-on-surface-variant">Disetujui. Poin ditambahkan.</p></div>
+                    <div class="flex items-start gap-2"><span class="mt-1 px-1.5 py-0.5 bg-red-100 text-red-800 rounded text-[9px] font-bold shrink-0">REJECTED</span><p class="text-[11px] text-on-surface-variant">Ditolak permanen (dengan catatan).</p></div>
                 </div>
             </div>
-            <div class="mt-auto pt-3 sm:pt-4"><span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full text-[10px] font-bold uppercase tracking-wider">SLA: 5 HARI KERJA</span></div>
-        </div>
-        <div class="bg-white p-5 sm:p-6 md:p-8 rounded-xl shadow-sm border border-outline-variant/20 flex flex-col gap-3 sm:gap-4 sm:col-span-2 lg:col-span-1">
-            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-lg sm:text-xl">3</div>
-            <h3 class="text-lg sm:text-xl font-bold text-on-surface font-headline">Akumulasi Poin</h3>
-            <div class="space-y-3">
-                <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">Poin yang disetujui akan dibagi menjadi dua kategori utama:</p>
-                <ul class="text-xs text-on-surface-variant space-y-2">
-                    <li class="flex gap-2"><span class="text-primary font-bold">•</span><div><strong>Kredit Wajib:</strong> Poin dari kegiatan institusional wajib (LDKM, Ospek, dll).</div></li>
-                    <li class="flex gap-2"><span class="text-primary font-bold">•</span><div><strong>Kredit Umum:</strong> Poin dari organisasi, lomba, seminar, atau pengabdian masyarakat.</div></li>
-                </ul>
+            <div class="mt-auto pt-3 sm:pt-4 border-t border-outline-variant/10">
+                <a href="{{ route('sertifikat.index') }}" class="text-primary font-semibold text-sm flex items-center gap-1 hover:underline">
+                    Lihat Riwayat <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
             </div>
-            <div class="mt-auto pt-3 sm:pt-4"><span class="px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-[10px] font-bold uppercase tracking-wider">Poin Terintegrasi</span></div>
         </div>
     </div>
 

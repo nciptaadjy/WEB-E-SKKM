@@ -21,4 +21,9 @@
         <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">cancel</span>
         Ditolak
     </span>
+@elseif($status === 'revision')
+    <span class="px-3 py-1 bg-amber-100 text-amber-800 text-[10px] font-bold rounded-full uppercase flex items-center gap-1 w-fit">
+        <span class="material-symbols-outlined text-[14px]">edit_note</span>
+        Revisi
+    </span>
 @endif

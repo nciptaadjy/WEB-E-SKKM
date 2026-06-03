@@ -9,17 +9,6 @@
                     {{ $totalPoin }}<span class="text-lg md:text-xl font-normal opacity-70 ml-2">poin</span>
                 </h3>
             </div>
-            @php $targetPoin = 200; $pctPoin = $targetPoin > 0 ? min(100, round(($totalPoin / $targetPoin) * 100)) : 0; @endphp
-            <div class="mt-4">
-                <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
-                    <div class="bg-white h-full transition-all duration-500" style="width: {{ $pctPoin }}%"></div>
-                </div>
-                @if($totalPoin < $targetPoin)
-                <p class="text-[10px] mt-2 opacity-80 font-medium">Anda butuh {{ $targetPoin - $totalPoin }} poin lagi untuk syarat kelulusan.</p>
-                @else
-                <p class="text-[10px] mt-2 opacity-80 font-medium">✓ Target poin kelulusan tercapai!</p>
-                @endif
-            </div>
         </div>
         <div class="bg-surface-container-lowest p-5 md:p-6 rounded-2xl flex flex-col justify-between border border-outline-variant/10 shadow-sm">
             <div class="w-10 h-10 rounded-full bg-secondary-container/30 flex items-center justify-center mb-4">
@@ -51,6 +40,7 @@
                 'nama_kegiatan' => $sertifikat->nama_kegiatan,
                 'penyelenggara' => $sertifikat->penyelenggara ?? '-',
                 'tanggal_kegiatan' => $sertifikat->tanggal_kegiatan ? \Carbon\Carbon::parse($sertifikat->tanggal_kegiatan)->format('d M Y') : '-',
+                'tanggal_pengajuan' => $sertifikat->created_at->format('d M Y'),
                 'kedudukan' => $sertifikat->kedudukan?->nama_kedudukan ?? '-',
                 'bidang' => $sertifikat->kedudukan?->subKegiatan?->bidangKegiatan?->nama_bidang ?? '-',
                 'sub_kegiatan' => $sertifikat->kedudukan?->subKegiatan?->nama_sub ?? '-',
@@ -58,6 +48,7 @@
                 'status' => $sertifikat->status,
                 'bobot' => $sertifikat->bobot_snapshot,
                 'catatan_reject' => $sertifikat->catatan_reject,
+                'catatan_approve' => $sertifikat->catatan_approve,
                 'link_sertifikat' => $sertifikat->link_sertifikat ?? null,
              ]) }})">
             <div class="p-4 md:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 md:gap-4">
@@ -113,10 +104,10 @@
                 </div>
             </div>
             @endif
-            {{-- Status Tracker --}}
+            {{-- Status Tracker with Timestamps --}}
             <div class="px-4 md:px-5 pb-4">
                 <div class="flex items-center gap-2 text-[10px] font-semibold">
-                    <div class="flex items-center gap-1 {{ in_array($sertifikat->status, ['pending', 'verified_bem', 'approved']) ? 'text-primary' : 'text-tertiary' }}">
+                    <div class="flex flex-col items-center gap-0.5 {{ in_array($sertifikat->status, ['pending', 'verified_bem', 'approved', 'revision']) ? 'text-primary' : 'text-tertiary' }}">
                         <span class="w-5 h-5 rounded-full {{ in_array($sertifikat->status, ['verified_bem', 'approved']) ? 'bg-primary text-white' : ($sertifikat->status === 'rejected' ? 'bg-tertiary text-white' : 'bg-primary/20 text-primary') }} flex items-center justify-center">
                             @if(in_array($sertifikat->status, ['verified_bem', 'approved']))
                             <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check</span>
@@ -127,9 +118,10 @@
                             @endif
                         </span>
                         <span>Upload</span>
+                        <span class="text-outline text-[8px] font-normal">{{ $sertifikat->created_at->format('d/m/y H:i') }}</span>
                     </div>
                     <div class="flex-1 h-0.5 {{ in_array($sertifikat->status, ['verified_bem', 'approved']) ? 'bg-primary' : 'bg-outline-variant/30' }}"></div>
-                    <div class="flex items-center gap-1 {{ in_array($sertifikat->status, ['verified_bem', 'approved']) ? 'text-primary' : 'text-outline' }}">
+                    <div class="flex flex-col items-center gap-0.5 {{ in_array($sertifikat->status, ['verified_bem', 'approved']) ? 'text-primary' : 'text-outline' }}">
                         <span class="w-5 h-5 rounded-full {{ in_array($sertifikat->status, ['verified_bem', 'approved']) ? 'bg-primary text-white' : 'bg-outline-variant/20' }} flex items-center justify-center">
                             @if(in_array($sertifikat->status, ['verified_bem', 'approved']))
                             <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check</span>
@@ -138,20 +130,38 @@
                             @endif
                         </span>
                         <span>BEM</span>
+                        @if($sertifikat->verified_bem_at)
+                        <span class="text-outline text-[8px] font-normal">{{ $sertifikat->verified_bem_at->format('d/m/y H:i') }}</span>
+                        @endif
                     </div>
-                    <div class="flex-1 h-0.5 {{ $sertifikat->status === 'approved' ? 'bg-secondary' : 'bg-outline-variant/30' }}"></div>
-                    <div class="flex items-center gap-1 {{ $sertifikat->status === 'approved' ? 'text-secondary' : 'text-outline' }}">
-                        <span class="w-5 h-5 rounded-full {{ $sertifikat->status === 'approved' ? 'bg-secondary text-white' : 'bg-outline-variant/20' }} flex items-center justify-center">
+                    <div class="flex-1 h-0.5 {{ $sertifikat->status === 'approved' ? 'bg-secondary' : ($sertifikat->status === 'revision' ? 'bg-amber-400' : 'bg-outline-variant/30') }}"></div>
+                    <div class="flex flex-col items-center gap-0.5 {{ $sertifikat->status === 'approved' ? 'text-secondary' : ($sertifikat->status === 'revision' ? 'text-amber-600' : 'text-outline') }}">
+                        <span class="w-5 h-5 rounded-full {{ $sertifikat->status === 'approved' ? 'bg-secondary text-white' : ($sertifikat->status === 'revision' ? 'bg-amber-100 text-amber-700' : 'bg-outline-variant/20') }} flex items-center justify-center">
                             @if($sertifikat->status === 'approved')
                             <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check</span>
+                            @elseif($sertifikat->status === 'revision')
+                            <span class="material-symbols-outlined text-[12px]">edit_note</span>
                             @else
                             3
                             @endif
                         </span>
-                        <span>Kemahasiswaan</span>
+                        <span>KMHS</span>
+                        @if($sertifikat->verified_khms_at)
+                        <span class="text-outline text-[8px] font-normal">{{ $sertifikat->verified_khms_at->format('d/m/y H:i') }}</span>
+                        @endif
                     </div>
                 </div>
             </div>
+            {{-- Revision Note --}}
+            @if($sertifikat->status === 'revision' && $sertifikat->catatan_revisi_khms)
+            <div class="px-4 md:px-5 pb-4">
+                <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
+                    <p class="text-xs text-amber-800 leading-relaxed">
+                        <strong class="font-bold text-amber-700">Catatan Revisi:</strong> {{ $sertifikat->catatan_revisi_khms }}
+                    </p>
+                </div>
+            </div>
+            @endif
         </div>
         @empty
         <div class="bg-surface-container-lowest rounded-xl border border-outline-variant/10 shadow-sm p-12 text-center">
@@ -174,7 +184,7 @@
     </div>
 
     {{-- Sertifikat Detail Modal --}}
-    {{-- <div id="modal-sertifikat-detail"
+    <div id="modal-sertifikat-detail"
         class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
         onclick="if(event.target===this)closeModal('modal-sertifikat-detail')">
         <div class="modal-box bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10 max-h-[92vh] flex flex-col">
@@ -205,8 +215,12 @@
                             <p class="text-sm font-semibold text-on-surface" id="sd-penyelenggara">-</p>
                         </div>
                         <div class="p-3 bg-surface-container-low rounded-xl">
-                            <p class="text-[10px] text-on-surface-variant mb-0.5">Tanggal</p>
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Tanggal Event</p>
                             <p class="text-sm font-semibold text-on-surface" id="sd-tanggal">-</p>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl">
+                            <p class="text-[10px] text-on-surface-variant mb-0.5">Tanggal Pengajuan</p>
+                            <p class="text-sm font-semibold text-on-surface" id="sd-tanggal-pengajuan">-</p>
                         </div>
                         <div class="p-3 bg-surface-container-low rounded-xl">
                             <p class="text-[10px] text-on-surface-variant mb-0.5">Kedudukan</p>
@@ -235,7 +249,7 @@
                 <div id="sd-reject-wrap" class="hidden">
                     <div class="p-3 bg-error-container/20 rounded-lg border border-error/10">
                         <p class="text-xs text-on-error-container leading-relaxed">
-                            <strong class="font-bold">Catatan Penolakan:</strong>
+                            <strong class="font-bold" id="sd-reject-title">Catatan:</strong>
                             <span id="sd-catatan-reject"></span>
                         </p>
                     </div>
@@ -264,7 +278,7 @@
                 </button>
             </div>
         </div>
-    </div> --}}
+    </div>
 
 @push('scripts')
 <script>
@@ -272,6 +286,7 @@
         document.getElementById('sd-nama-kegiatan').textContent = data.nama_kegiatan || '-';
         document.getElementById('sd-penyelenggara').textContent = data.penyelenggara || '-';
         document.getElementById('sd-tanggal').textContent = data.tanggal_kegiatan || '-';
+        document.getElementById('sd-tanggal-pengajuan').textContent = data.tanggal_pengajuan || '-';
         document.getElementById('sd-kedudukan').textContent = data.kedudukan || '-';
         document.getElementById('sd-bidang').textContent = data.bidang || '-';
         document.getElementById('sd-sub-kegiatan').textContent = data.sub_kegiatan || '-';
@@ -281,17 +296,27 @@
         // Status badge
         const statusWrap = document.getElementById('sd-status-wrap');
         const statusMap = {
-            'approved': '<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full uppercase">Disetujui</span>',
-            'verified_bem': '<span class="px-3 py-1 bg-primary-fixed text-primary text-xs font-bold rounded-full uppercase">Verif BEM</span>',
-            'pending': '<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant text-xs font-bold rounded-full uppercase">Menunggu</span>',
-            'rejected': '<span class="px-3 py-1 bg-error-container text-on-error-container text-xs font-bold rounded-full uppercase">Ditolak</span>',
+            'approved': '<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full uppercase inline-flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">check_circle</span> Disetujui</span>',
+            'verified_bem': '<span class="px-3 py-1 bg-primary-fixed text-primary text-xs font-bold rounded-full uppercase inline-flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">fact_check</span> Verif BEM</span>',
+            'pending': '<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant text-xs font-bold rounded-full uppercase inline-flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">schedule</span> Menunggu</span>',
+            'rejected': '<span class="px-3 py-1 bg-error-container text-on-error-container text-xs font-bold rounded-full uppercase inline-flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">cancel</span> Ditolak</span>',
+            'revision': '<span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-full uppercase inline-flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">edit_note</span> Revisi</span>',
         };
         statusWrap.innerHTML = statusMap[data.status] || '';
 
-        // Catatan reject
+        // Catatan reject/approve
         const rejectWrap = document.getElementById('sd-reject-wrap');
+        const rejectTitle = document.getElementById('sd-reject-title');
+        
         if (data.status === 'rejected' && data.catatan_reject) {
+            rejectTitle.textContent = 'Catatan Penolakan:';
             document.getElementById('sd-catatan-reject').textContent = data.catatan_reject;
+            rejectWrap.firstElementChild.className = 'p-3 bg-error-container/20 rounded-lg border border-error/10 text-on-error-container';
+            rejectWrap.classList.remove('hidden');
+        } else if (data.status === 'approved' && data.catatan_approve) {
+            rejectTitle.textContent = 'Catatan Persetujuan:';
+            document.getElementById('sd-catatan-reject').textContent = data.catatan_approve;
+            rejectWrap.firstElementChild.className = 'p-3 bg-secondary/10 rounded-lg border border-secondary/20 text-secondary';
             rejectWrap.classList.remove('hidden');
         } else {
             rejectWrap.classList.add('hidden');

@@ -20,13 +20,19 @@ class Sertifikat extends Model
         'bobot_snapshot',
         'status',
         'catatan_reject',
+        'catatan_approve',
+        'catatan_revisi_khms',
         'verified_by_bem',
         'verified_by_khms',
+        'verified_bem_at',
+        'verified_khms_at',
     ];
 
     protected $casts = [
         'tanggal_kegiatan' => 'date',
         'bobot_snapshot' => 'float',
+        'verified_bem_at' => 'datetime',
+        'verified_khms_at' => 'datetime',
     ];
 
     // ── Relasi ──

@@ -61,7 +61,7 @@
                 <div class="space-y-6">
                     @foreach($progressPerBidang as $bidang)
                     @php
-                        $target = $bidang['is_wajib'] ? 50 : 30;
+                        $target = $bidang['is_wajib'] ? 9 : 15;
                         $persen = $target > 0 ? min(100, round(($bidang['poin'] / $target) * 100)) : 0;
                     @endphp
                     <div>
@@ -86,8 +86,77 @@
             </div>
         </div>
 
-        {{-- Sertifikat Terakhir & Event --}}
+        {{-- Pengajuan Dalam Proses (Real-time Tracking) --}}
         <div class="lg:col-span-2 space-y-6">
+            @if($inProgressSertifikats->count() > 0)
+            <div class="bg-surface-container-lowest p-5 md:p-6 rounded-xl shadow-[0_12px_40px_rgba(23,28,31,0.06)] border-l-4 border-primary">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">pending_actions</span>
+                        <h3 class="text-lg font-bold text-on-surface font-headline">Pengajuan Dalam Proses</h3>
+                    </div>
+                    <span class="text-xs font-bold px-3 py-1 bg-primary/10 text-primary rounded-full">{{ $inProgressSertifikats->count() }} aktif</span>
+                </div>
+                <div class="space-y-4">
+                    @foreach($inProgressSertifikats as $ip)
+                    <div class="p-4 rounded-xl border border-outline-variant/10 bg-surface-container-low/30">
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-bold text-on-surface truncate">{{ $ip->nama_kegiatan }}</p>
+                                <p class="text-xs text-on-surface-variant mt-0.5">{{ $ip->kedudukan?->subKegiatan?->bidangKegiatan?->nama_bidang ?? '-' }} • {{ $ip->created_at->format('d M Y H:i') }}</p>
+                            </div>
+                            @include('components.status-badge', ['status' => $ip->status])
+                        </div>
+                        {{-- Step Tracker --}}
+                        <div class="flex items-center gap-1.5 text-[10px] font-semibold mt-3">
+                            <div class="flex items-center gap-1 {{ in_array($ip->status, ['pending', 'verified_bem', 'approved', 'revision']) ? 'text-primary' : 'text-outline' }}">
+                                <span class="w-5 h-5 rounded-full {{ in_array($ip->status, ['verified_bem', 'approved']) ? 'bg-primary text-white' : ($ip->status === 'pending' ? 'bg-primary/20 text-primary animate-pulse' : 'bg-primary/20 text-primary') }} flex items-center justify-center">
+                                    @if(in_array($ip->status, ['verified_bem', 'approved']))
+                                    <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check</span>
+                                    @else
+                                    1
+                                    @endif
+                                </span>
+                                <span>Upload</span>
+                            </div>
+                            <div class="flex-1 h-0.5 {{ in_array($ip->status, ['verified_bem', 'approved']) ? 'bg-primary' : 'bg-outline-variant/30' }}"></div>
+                            <div class="flex items-center gap-1 {{ in_array($ip->status, ['verified_bem', 'approved']) ? 'text-primary' : 'text-outline' }}">
+                                <span class="w-5 h-5 rounded-full {{ $ip->status === 'verified_bem' ? 'bg-primary/20 text-primary animate-pulse' : (in_array($ip->status, ['approved']) ? 'bg-primary text-white' : 'bg-outline-variant/20') }} flex items-center justify-center">
+                                    @if($ip->status === 'approved')
+                                    <span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">check</span>
+                                    @else
+                                    2
+                                    @endif
+                                </span>
+                                <span>BEM</span>
+                            </div>
+                            <div class="flex-1 h-0.5 {{ $ip->status === 'approved' ? 'bg-secondary' : ($ip->status === 'revision' ? 'bg-amber-400' : 'bg-outline-variant/30') }}"></div>
+                            <div class="flex items-center gap-1 {{ $ip->status === 'approved' ? 'text-secondary' : ($ip->status === 'revision' ? 'text-amber-600' : 'text-outline') }}">
+                                <span class="w-5 h-5 rounded-full {{ $ip->status === 'approved' ? 'bg-secondary text-white' : ($ip->status === 'revision' ? 'bg-amber-100 text-amber-700' : 'bg-outline-variant/20') }} flex items-center justify-center">
+                                    @if($ip->status === 'revision')
+                                    <span class="material-symbols-outlined text-[12px]">edit_note</span>
+                                    @else
+                                    3
+                                    @endif
+                                </span>
+                                <span>KMHS</span>
+                            </div>
+                        </div>
+                        {{-- Revision Notes --}}
+                        @if($ip->status === 'revision' && $ip->catatan_revisi_khms)
+                        <div class="mt-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                            <p class="text-[10px] text-amber-700 font-bold mb-0.5 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs">edit_note</span> Catatan Revisi Kemahasiswaan
+                            </p>
+                            <p class="text-xs text-amber-800">{{ $ip->catatan_revisi_khms }}</p>
+                        </div>
+                        @endif
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
             {{-- Sertifikat Terbaru --}}
             <div class="bg-surface-container-lowest p-5 md:p-6 rounded-xl shadow-[0_12px_40px_rgba(23,28,31,0.06)]">
                 <div class="flex justify-between items-center mb-6">

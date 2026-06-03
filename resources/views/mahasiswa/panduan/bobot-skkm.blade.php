@@ -38,107 +38,249 @@
                 <tbody class="divide-y divide-slate-100 text-on-surface">
                     {{-- Section 1: Akademik --}}
                     <tr class="bg-primary/5"><td class="px-3 sm:px-6 py-2 text-[10px] sm:text-xs font-bold text-primary tracking-widest uppercase" colspan="7">1. AKADEMIK &amp; ILMIAH</td></tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="2">1.1</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="2">Konferensi / Seminar / Simposium</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Penulis Utama / Pemakalah</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
-                    </tr>
                     <tr class="hover:bg-surface-container-low transition-colors border-b">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Penulis Pendamping / Peserta</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
-                    </tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="3">1.2</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="3">Karya Tulis / PKM / Artikel Ilmiah</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Ketua Kelompok</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">7</td>
-                    </tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Anggota Kelompok</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="3"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="3">Konfrensi</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Penulis Utama</td>
                         <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
                     </tr>
                     <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Penyaji</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Moderator</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
+                    </tr>
+                    
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="4"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="4">Memiliki Karya Tulis Ilmiah</td>
                         <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Perorangan</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">7</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant font-semibold bg-gray-50/50" colspan="5">Kelompok</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Ketua</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Anggota</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td>
+                    </tr>
+
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="2"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="2">Proposal PKM</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Submit Proposal PKM</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Lolos Proposal PKM</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="2"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="2">Publish Penelitian/<br>Pengabdian Masyarakat</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Ketua</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Anggota</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
+                    </tr>
+
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold">Seminar / Workshop / Talk show</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Peserta</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td>
+                    </tr>
+
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold">Kuliah Industri</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Peserta</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="2"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="2">Kepanitiaan</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Ketua</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">8</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Anggota</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
                     </tr>
 
                     {{-- Section 2: Minat Bakat --}}
                     <tr class="bg-primary/5"><td class="px-3 sm:px-6 py-2 text-[10px] sm:text-xs font-bold text-primary tracking-widest uppercase" colspan="7">2. MINAT BAKAT, SENI DAN OLAHRAGA</td></tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="4">2.1</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="4">Kompetisi / Kejuaraan / Lomba</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Juara I / Medali Emas</td>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="5"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="5">Lomba</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Juara 1</td>
                         <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">7</td>
                     </tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Juara II / Medali Perak</td>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Juara 2</td>
                         <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
                     </tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Juara III / Medali Perunggu</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Juara 3</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
                     </tr>
                     <tr class="hover:bg-surface-container-low transition-colors border-b">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Peserta Terpilih / Finalis</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">1</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Harapan / Favorit</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Peserta</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
+                    </tr>
+                    
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold">Festival, Pentas Seni/Musik dan Olahraga</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Peserta</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
+                    </tr>
+
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="3"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="3"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Juri</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Pengisi Acara</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Partisipasi</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">1</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">1</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">1</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td>
+                    </tr>
+
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="2"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="2">Kepanitiaan</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Ketua</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">8</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Anggota</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
                     </tr>
 
                     {{-- Section 3: Organisasi --}}
-                    <tr class="bg-primary/5"><td class="px-3 sm:px-6 py-2 text-[10px] sm:text-xs font-bold text-primary tracking-widest uppercase" colspan="7">3. ORGANISASI DAN KEPEMIMPINAN</td></tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="3">3.1</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="3">Pengurus Organisasi (BEM/DPM/UKM)</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Ketua Umum / Presiden</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">-</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">7</td>
-                    </tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Sekretaris / Bendahara / Ketua Bidang</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">-</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
+                    <tr class="bg-primary/5"><td class="px-3 sm:px-6 py-2 text-[10px] sm:text-xs font-bold text-primary tracking-widest uppercase" colspan="7">3. ORGANISASI DAN SOSIAL</td></tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="6"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="6">BEM/DPM</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Presma /Ketua DPM</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">10</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
                     </tr>
                     <tr class="hover:bg-surface-container-low transition-colors border-b">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Anggota Pengurus</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">-</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
-                    </tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="2">3.2</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="2">Kepanitiaan Kegiatan</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Ketua Panitia / Koordinator</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Wakil</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">8</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
                     </tr>
                     <tr class="hover:bg-surface-container-low transition-colors border-b">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Anggota Panitia</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Sekretaris</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Bendahara</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Mentri/Ketua Komisi</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Anggota/Staf</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="6"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="6">HIMAPRODI /HIMAS/<br>UKM</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Ketua</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Wakil</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Sekretaris</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Bendahara</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Koordinator</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Anggota</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold">BAKSOS</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Peserta</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td>
+                    </tr>
+
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="2"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="2">Kepanitiaan</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Ketua</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">8</td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Anggota</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
                     </tr>
 
                     {{-- Section 4: Kegiatan Wajib --}}
-                    <tr class="bg-primary/5"><td class="px-3 sm:px-6 py-2 text-[10px] sm:text-xs font-bold text-primary tracking-widest uppercase" colspan="7">4. KEGIATAN WAJIB &amp; SOSIAL</td></tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant">4.1</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold">Pengabdian Masyarakat / Bakti Sosial</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Relawan / Pelaksana</td>
+                    <tr class="bg-primary/5"><td class="px-3 sm:px-6 py-2 text-[10px] sm:text-xs font-bold text-primary tracking-widest uppercase" colspan="7">4. KEGIATAN WAJIB</td></tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold">Peserta</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">G.M.T.I</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold">Lulus</td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">G.M.T.I</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant" rowspan="4"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold" rowspan="4"></td>
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Rangkaian Dies Natalis</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold"></td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Pentas Musik</td>
                         <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
                     </tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant">4.2</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold">Pelatihan / Workshop Kompetensi</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Peserta Sertifikasi</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">6</td>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Peningkatan Soft Skill</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
                     </tr>
-                    <tr class="hover:bg-surface-container-low transition-colors">
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-center font-medium text-on-surface-variant">4.3</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 font-semibold">Orientasi Mahasiswa (PKKMB)</td>
-                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Peserta Lulus</td>
-                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">10</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">-</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">-</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">-</td>
+                    <tr class="hover:bg-surface-container-low transition-colors border-b">
+                        <td class="px-3 sm:px-6 py-3 sm:py-4 text-on-surface-variant">Career Week</td>
+                        <td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">2</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">3</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">4</td><td class="px-2 sm:px-4 py-3 sm:py-4 text-center font-bold">5</td>
                     </tr>
                 </tbody>
             </table>

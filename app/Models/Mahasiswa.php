@@ -10,6 +10,8 @@ class Mahasiswa extends Model
 {
     protected $fillable = [
         'nim',
+        'microsoft_id',
+        'email',
         'nama',
         'password',
         'prodi',

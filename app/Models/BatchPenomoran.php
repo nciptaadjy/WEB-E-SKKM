@@ -12,10 +12,14 @@ class BatchPenomoran extends Model
 
     protected $fillable = [
         'event_id',
+        'nama_event',
+        'kategori_event',
         'requested_by',
         'status',
         'format_nomor',
+        'total_peserta',
         'catatan',
+        'catatan_revisi',
         'approved_by',
         'approved_at',
     ];
@@ -42,5 +46,11 @@ class BatchPenomoran extends Model
     public function nomorSertifikats(): HasMany
     {
         return $this->hasMany(NomorSertifikat::class, 'batch_id');
+    }
+
+    /** Peserta langsung (dari form/CSV input) */
+    public function pesertaBatch(): HasMany
+    {
+        return $this->hasMany(BatchPeserta::class, 'batch_id');
     }
 }

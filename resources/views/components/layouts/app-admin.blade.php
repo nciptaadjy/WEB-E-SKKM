@@ -64,6 +64,129 @@
 
 <body class="bg-surface text-on-surface min-h-screen">
 
+
+    <div id="modal-add-bidang" class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
+        onclick="if(event.target===this)closeModal('modal-add-bidang')">
+        <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
+            <form action="{{ route('kemahasiswaan.bidang.store') }}" method="POST">
+                @csrf
+                <div class="p-6 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-2xl">category</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold font-headline text-on-surface">Tambah Bidang Baru</h3>
+                            <p class="text-xs text-on-surface-variant">Buat bidang kegiatan baru untuk SKKM.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Nama Bidang <span class="text-error">*</span></label>
+                        <input type="text" name="nama_bidang" required
+                            class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                            placeholder="Contoh: Penalaran dan Keilmuan">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Tipe</label>
+                        <select name="is_wajib" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                            <option value="0">Pilihan</option>
+                            <option value="1">Wajib</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low p-4 flex gap-3">
+                    <button type="button" onclick="closeModal('modal-add-bidang')"
+                        class="flex-1 py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors">Batal</button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-base">check</span> Tambah
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{-- Modal: Add Sub Kegiatan --}}
+    <div id="modal-add-sub" class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
+        onclick="if(event.target===this)closeModal('modal-add-sub')">
+        <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
+            <form id="form-add-sub" action="{{ route('kemahasiswaan.sub.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="bidang_kegiatan_id" id="add-sub-bidang-id">
+                <div class="p-6 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-2xl">add_circle</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold font-headline text-on-surface">Tambah Sub Kegiatan</h3>
+                            <p class="text-xs text-on-surface-variant">Untuk bidang: <strong id="add-sub-bidang-nama">-</strong></p>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Nama Sub Kegiatan <span class="text-error">*</span></label>
+                        <input type="text" name="nama_sub" required
+                            class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                            placeholder="Contoh: Seminar Nasional">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Memiliki Tingkat?</label>
+                        <select name="has_tingkat" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                            <option value="0">Tidak</option>
+                            <option value="1">Ya (PT, Regional, Nasional, Internasional)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low p-4 flex gap-3">
+                    <button type="button" onclick="closeModal('modal-add-sub')"
+                        class="flex-1 py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors">Batal</button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-base">check</span> Tambah
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{-- Modal: Edit Sub Kegiatan --}}
+    <div id="modal-edit-sub" class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
+        onclick="if(event.target===this)closeModal('modal-edit-sub')">
+        <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
+            <form id="form-edit-sub" method="POST" action="">
+                @csrf
+                <div class="p-6 space-y-5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary text-2xl">edit</span>
+                        </div>
+                        <h3 class="text-xl font-extrabold font-headline text-on-surface">Edit Sub Kegiatan</h3>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Nama Sub Kegiatan</label>
+                        <input type="text" name="nama_sub" id="edit-sub-nama" required
+                            class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Memiliki Tingkat?</label>
+                        <select name="has_tingkat" id="edit-sub-tingkat" class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                            <option value="0">Tidak</option>
+                            <option value="1">Ya</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low p-4 flex gap-3">
+                    <button type="button" onclick="closeModal('modal-edit-sub')"
+                        class="flex-1 py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors">Batal</button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-base">check</span> Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="modal-detail"
         class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm">
         <div class="modal-box bg-white w-full sm:max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10 max-h-[92vh] flex flex-col">
@@ -279,6 +402,145 @@
             </form>
         </div>
     </div>
+
+    <div id="modal-kmhs-setujui"
+        class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
+        onclick="if(event.target===this)closeModal('modal-kmhs-setujui')">
+        <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
+            <form id="form-kmhs-setujui" method="POST" action="">
+                @csrf
+                <div class="p-5 sm:p-6">
+                    <div class="flex flex-col items-center text-center mb-6">
+                        <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-3">
+                            <span class="material-symbols-outlined text-secondary text-4xl" style="font-variation-settings:'FILL' 1">verified</span>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-on-surface font-headline">Setujui Pengajuan?</h3>
+                        <p class="text-sm text-on-surface-variant mt-1.5 max-w-xs">
+                            Sertifikat <strong class="text-on-surface" id="ks-nama-kegiatan">-</strong>
+                            akan disetujui dan poin akan ditambahkan.
+                        </p>
+                    </div>
+                    <div class="mb-5">
+                        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Poin SKKM</label>
+                        <div class="flex items-center gap-3 p-3 bg-primary/5 rounded-xl border border-primary/15">
+                            <div class="flex-1">
+                                <p class="text-[10px] text-on-surface-variant mb-0.5">Poin Saat Ini</p>
+                                <p class="text-lg font-bold text-primary font-headline" id="ks-bobot-asal">0</p>
+                            </div>
+                            <div class="w-px h-10 bg-outline-variant/20"></div>
+                            <div class="flex-1">
+                                <label for="ks-bobot-override" class="text-[10px] text-secondary font-bold mb-0.5 block">Poin Ditetapkan</label>
+                                <input type="number" id="ks-bobot-override" name="bobot_override" step="0.5" min="0" max="100"
+                                    class="w-full text-lg font-bold text-secondary font-headline bg-transparent border-0 border-b-2 border-secondary/30 focus:border-secondary focus:ring-0 p-0 pb-0.5 outline-none" value="0">
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-on-surface-variant mt-1.5 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">info</span>
+                            Ubah poin jika diperlukan setelah mengecek sertifikat.
+                        </p>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Catatan (Opsional)</label>
+                        <textarea name="catatan_approve" rows="3" class="w-full p-4 text-sm bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all resize-none outline-none" placeholder="Tambahkan catatan jika diperlukan..."></textarea>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low p-4 flex gap-3">
+                    <button type="button" onclick="closeModal('modal-kmhs-setujui')"
+                        class="flex-1 py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors">Batal</button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 rounded-xl bg-secondary text-on-secondary font-bold text-sm shadow-lg shadow-secondary/20 hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-base">check</span> Ya, Setujui
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-kmhs-tolak"
+        class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
+        onclick="if(event.target===this)closeModal('modal-kmhs-tolak')">
+        <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
+            <form id="form-kmhs-tolak" method="POST" action="">
+                @csrf
+                <div class="p-5 sm:p-6">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-11 h-11 rounded-xl bg-error/10 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-error text-2xl">cancel</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold font-headline text-on-surface">Tolak Pengajuan</h3>
+                            <p class="text-xs text-on-surface-variant mt-0.5">Berikan alasan agar mahasiswa bisa memperbaiki.</p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-error/5 border border-error/15 rounded-xl mb-5">
+                        <p class="text-[10px] text-on-surface-variant mb-0.5">Menolak sertifikat:</p>
+                        <p class="text-sm font-bold text-on-surface" id="kt-nama-kegiatan">-</p>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">
+                            Alasan Penolakan <span class="text-error">*</span>
+                        </label>
+                        <textarea id="kt-catatan" name="catatan_reject" rows="4" minlength="10" required
+                            class="w-full p-4 text-sm bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-error/20 focus:border-error transition-all resize-none outline-none"
+                            placeholder="Contoh: Gambar sertifikat tidak terbaca jelas atau blur."></textarea>
+                        <p class="text-[10px] text-on-surface-variant mt-1">Wajib diisi minimal 10 karakter.</p>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low p-4 flex gap-3 justify-end">
+                    <button type="button" onclick="closeModal('modal-kmhs-tolak')"
+                        class="px-6 py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors">Batal</button>
+                    <button type="submit"
+                        class="px-6 py-2.5 rounded-xl bg-error text-on-error font-bold text-sm shadow-lg shadow-error/20 hover:opacity-90 active:scale-95 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">cancel</span> Ya, Tolak
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-kmhs-revisi"
+        class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
+        onclick="if(event.target===this)closeModal('modal-kmhs-revisi')">
+        <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10">
+            <form id="form-kmhs-revisi" method="POST" action="">
+                @csrf
+                <div class="p-5 sm:p-6">
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-11 h-11 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-amber-700 text-2xl">edit_note</span>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold font-headline text-on-surface">Minta Revisi</h3>
+                            <p class="text-xs text-on-surface-variant mt-0.5">Berikan catatan agar mahasiswa/ormawa bisa memperbaiki.</p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl mb-5">
+                        <p class="text-[10px] text-on-surface-variant mb-0.5">Sertifikat yang diminta revisi:</p>
+                        <p class="text-sm font-bold text-on-surface" id="kr-nama-kegiatan">-</p>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">
+                            Catatan Revisi <span class="text-amber-600">*</span>
+                        </label>
+                        <textarea id="kr-catatan" name="catatan_revisi_khms" rows="4" minlength="10" required
+                            class="w-full p-4 text-sm bg-surface-container-low border border-outline-variant/30 rounded-xl focus:ring-2 focus:ring-amber-300 focus:border-amber-400 transition-all resize-none outline-none"
+                            placeholder="Contoh: Data kegiatan tidak sesuai, harap perbaiki tanggal dan nama penyelenggara."></textarea>
+                        <p class="text-[10px] text-on-surface-variant mt-1">Wajib diisi minimal 10 karakter.</p>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low p-4 flex gap-3 justify-end">
+                    <button type="button" onclick="closeModal('modal-kmhs-revisi')"
+                        class="px-6 py-2.5 rounded-xl border border-outline-variant text-on-surface-variant font-bold text-sm hover:bg-surface-container transition-colors">Batal</button>
+                    <button type="submit"
+                        class="px-6 py-2.5 rounded-xl bg-amber-500 text-white font-bold text-sm shadow-lg shadow-amber-500/20 hover:bg-amber-600 active:scale-95 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-base">edit_note</span> Kirim Revisi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     
     {{-- Sidebar Overlay (mobile) --}}
     <div id="sidebar-overlay"

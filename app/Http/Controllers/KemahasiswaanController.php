@@ -11,6 +11,7 @@ use App\Models\Mahasiswa;
 use App\Models\User;
 use App\Models\BobotSkkm;
 use App\Models\BatchPenomoran;
+use App\Models\BatchPeserta;
 use App\Models\NomorSertifikat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -68,11 +69,14 @@ class KemahasiswaanController extends Controller
     {
         $request->validate([
             'bobot_override' => 'nullable|numeric|min:0|max:100',
+            'catatan_approve' => 'nullable|string|max:500',
         ]);
 
         $updateData = [
-            'status'           => 'approved',
-            'verified_by_khms' => Auth::id(),
+            'status'            => 'approved',
+            'verified_by_khms'  => Auth::id(),
+            'verified_khms_at'  => now(),
+            'catatan_approve'   => $request->catatan_approve,
         ];
 
         // Jika Kemahasiswaan mengubah poin, update bobot_snapshot
@@ -120,13 +124,16 @@ class KemahasiswaanController extends Controller
         ]);
 
         $sertifikat->update([
-            'status' => 'rejected',
-            'catatan_reject' => $request->catatan_reject ?? 'Ditolak oleh Kemahasiswaan.',
-            'verified_by_khms' => Auth::id(),
+            'status'            => 'rejected',
+            'catatan_reject'    => $request->catatan_reject ?? 'Ditolak oleh Kemahasiswaan.',
+            'verified_by_khms'  => Auth::id(),
+            'verified_khms_at'  => now(),
         ]);
 
         return redirect()->back()->with('success', 'Sertifikat ditolak.');
     }
+
+    // Removed revisi method
 
     // ══════════════════════════════════════════════
     // ACCOUNT MANAGEMENT (BEM & Ormawa)
@@ -134,7 +141,7 @@ class KemahasiswaanController extends Controller
 
     public function manageAkun()
     {
-        $users = User::whereIn('role', ['bem', 'ormawa'])
+        $users = User::whereIn('role', ['bem', 'ormawa', 'kemahasiswaan'])
             ->orderBy('role')
             ->orderBy('nama_pengguna')
             ->paginate(15);
@@ -148,7 +155,7 @@ class KemahasiswaanController extends Controller
             'username'      => 'required|string|max:50|unique:users,username',
             'nama_pengguna' => 'required|string|max:100',
             'password'      => 'required|string|min:6',
-            'role'          => 'required|in:bem,ormawa',
+            'role'          => 'required|in:bem,ormawa,kemahasiswaan',
         ]);
 
         User::create([
@@ -163,8 +170,12 @@ class KemahasiswaanController extends Controller
 
     public function deleteAkun(User $user)
     {
-        if (!in_array($user->role, ['bem', 'ormawa'])) {
+        if (!in_array($user->role, ['bem', 'ormawa', 'kemahasiswaan'])) {
             return back()->with('error', 'Tidak dapat menghapus akun ini.');
+        }
+
+        if ($user->id === Auth::id()) {
+            return back()->with('error', 'Tidak dapat menghapus akun Anda sendiri.');
         }
 
         $user->delete();
@@ -173,7 +184,7 @@ class KemahasiswaanController extends Controller
 
     public function resetPassword(Request $request, User $user)
     {
-        if (!in_array($user->role, ['bem', 'ormawa'])) {
+        if (!in_array($user->role, ['bem', 'ormawa', 'kemahasiswaan'])) {
             return back()->with('error', 'Tidak dapat mereset password akun ini.');
         }
 
@@ -192,15 +203,41 @@ class KemahasiswaanController extends Controller
     // BATCH PENOMORAN APPROVAL
     // ══════════════════════════════════════════════
 
+    /**
+     * Bulan Romawi helper
+     */
+    private function bulanRomawi(int $bulan): string
+    {
+        $romawi = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+        return $romawi[$bulan - 1] ?? (string)$bulan;
+    }
+
+    /**
+     * List all batch penomoran
+     */
     public function batchPenomoran()
     {
-        $batches = BatchPenomoran::with(['event.pesertaEvents', 'requester', 'approver'])
+        $batches = BatchPenomoran::with(['event', 'requester', 'approver'])
+            ->withCount('pesertaBatch')
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
         return view('Kemahasiswaan.batch-penomoran', compact('batches'));
     }
 
+    /**
+     * Show batch detail for review
+     */
+    public function showBatchDetail(BatchPenomoran $batch)
+    {
+        $batch->load(['pesertaBatch', 'requester', 'approver', 'event']);
+
+        return view('Kemahasiswaan.batch-detail', compact('batch'));
+    }
+
+    /**
+     * Approve batch and generate nomor sertifikat
+     */
     public function approveBatch(Request $request, BatchPenomoran $batch)
     {
         if ($batch->status !== 'pending') {
@@ -213,32 +250,93 @@ class KemahasiswaanController extends Controller
             'approved_at' => now(),
         ]);
 
-        // Generate nomor sertifikat for each peserta
-        $format = $batch->format_nomor ?: 'SKKM/{nomor}/{tahun}';
-        $peserta = $batch->event->pesertaEvents;
+        // Generate nomor sertifikat for each peserta in batch_peserta
+        $format = $batch->format_nomor ?: '{NO}/Srtf/KMHS/{BULAN}/{TAHUN}';
         $tahun = date('Y');
-        $counter = NomorSertifikat::count() + 1;
+        $bulan = $this->bulanRomawi((int) date('m'));
 
-        foreach ($peserta as $p) {
+        // Global counter — count all existing nomor_sertifikat in batch_peserta
+        $counter = BatchPeserta::whereNotNull('nomor_sertifikat')->count() + 1;
+
+        $pesertaBatch = $batch->pesertaBatch;
+
+        foreach ($pesertaBatch as $p) {
+            // Skip if already has a number (immutable)
+            if ($p->nomor_sertifikat) {
+                continue;
+            }
+
             $nomor = str_replace(
-                ['{nomor}', '{tahun}'],
-                [str_pad($counter, 4, '0', STR_PAD_LEFT), $tahun],
+                ['{NO}', '{TYPE}', '{ORG}', '{BULAN}', '{TAHUN}'],
+                [$counter, 'Srtf', 'KMHS', $bulan, $tahun],
                 $format
             );
 
-            NomorSertifikat::create([
-                'batch_id'         => $batch->id,
-                'peserta_event_id' => $p->id,
+            $p->update([
                 'nomor_sertifikat' => $nomor,
             ]);
 
-            $p->update(['status_sertifikat' => 'sudah_generate']);
             $counter++;
         }
 
-        return back()->with('success', "Batch disetujui! {$peserta->count()} nomor sertifikat berhasil digenerate.");
+        // Also generate to legacy nomor_sertifikat table for backward compat
+        // if batch has event with pesertaEvents
+        if ($batch->event) {
+            $pesertaEvents = $batch->event->pesertaEvents;
+            foreach ($pesertaEvents as $pe) {
+                $existingNomor = NomorSertifikat::where('batch_id', $batch->id)
+                    ->where('peserta_event_id', $pe->id)
+                    ->exists();
+
+                if (!$existingNomor) {
+                    // Find matching batch_peserta by identifier
+                    $matchedBp = $batch->pesertaBatch()
+                        ->whereHas('mahasiswa', fn($q) => $q->where('id', $pe->mahasiswa_id))
+                        ->first();
+
+                    if ($matchedBp && $matchedBp->nomor_sertifikat) {
+                        NomorSertifikat::create([
+                            'batch_id'         => $batch->id,
+                            'peserta_event_id' => $pe->id,
+                            'nomor_sertifikat' => $matchedBp->nomor_sertifikat,
+                        ]);
+                        $pe->update(['status_sertifikat' => 'sudah_generate']);
+                    }
+                }
+            }
+        }
+
+        // Update batch status to generated
+        $batch->update(['status' => 'generated']);
+
+        return back()->with('success', "Batch disetujui! {$pesertaBatch->count()} nomor sertifikat berhasil digenerate.");
     }
 
+    /**
+     * Request revision on batch
+     */
+    public function revisiBatch(Request $request, BatchPenomoran $batch)
+    {
+        if ($batch->status !== 'pending') {
+            return back()->with('error', 'Batch ini sudah diproses.');
+        }
+
+        $request->validate([
+            'catatan_revisi' => 'required|string|max:500',
+        ]);
+
+        $batch->update([
+            'status'         => 'revision',
+            'catatan_revisi' => $request->catatan_revisi,
+            'approved_by'    => Auth::id(),
+        ]);
+
+        return back()->with('success', 'Batch diminta revisi.');
+    }
+
+    /**
+     * Reject batch
+     */
     public function rejectBatch(Request $request, BatchPenomoran $batch)
     {
         $request->validate([
@@ -255,11 +353,50 @@ class KemahasiswaanController extends Controller
         return back()->with('success', 'Batch penomoran ditolak.');
     }
 
+    /**
+     * Download batch results as CSV
+     */
+    public function downloadBatch(BatchPenomoran $batch)
+    {
+        if ($batch->status !== 'generated') {
+            return back()->with('error', 'Batch belum di-generate.');
+        }
+
+        $peserta = $batch->pesertaBatch;
+
+        $filename = 'batch_penomoran_' . $batch->id . '_' . now()->format('Ymd') . '.csv';
+
+        $headers = [
+            'Content-Type'        => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ];
+
+        $callback = function () use ($peserta) {
+            $file = fopen('php://output', 'w');
+            // BOM for Excel UTF-8
+            fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
+            fputcsv($file, ['NIM/ID/NIK', 'Nama', 'Tipe', 'Nomor Sertifikat']);
+
+            foreach ($peserta as $p) {
+                fputcsv($file, [
+                    $p->identifier,
+                    $p->nama,
+                    $p->tipe,
+                    $p->nomor_sertifikat ?? '-',
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
     // ══════════════════════════════════════════════
     // MANAGE POINT SKKM
     // ══════════════════════════════════════════════
 
-    public function managePoint()
+    public function managePoint($bidang = null)
     {
         $bidangs = BidangKegiatan::with(['subKegiatans.kedudukans.bobotSkkms'])->get();
 
@@ -355,5 +492,57 @@ class KemahasiswaanController extends Controller
     {
         $sub->delete();
         return back()->with('success', "Sub kegiatan berhasil dihapus.");
+    }
+
+    public function storeKedudukan(Request $request)
+    {
+        $request->validate([
+            'sub_kegiatan_id' => 'required',
+            'nama_kedudukan'  => 'required|string|max:150',
+        ]);
+
+        $sub = SubKegiatan::findOrFail($request->sub_kegiatan_id);
+
+        $kedudukan = Kedudukan::create([
+            'sub_kegiatan_id' => $sub->id,
+            'nama_kedudukan'  => $request->nama_kedudukan,
+            'is_active'       => true,
+        ]);
+
+        if ($sub->has_tingkat) {
+            $tingkats = ['perguruan_tinggi', 'regional', 'nasional', 'internasional'];
+        } else {
+            $tingkats = ['perguruan_tinggi'];
+        }
+
+        foreach ($tingkats as $t) {
+            BobotSkkm::create([
+                'kedudukan_id' => $kedudukan->id,
+                'tingkat'      => $t,
+                'bobot'        => 0,
+                'updated_by'   => Auth::id(),
+            ]);
+        }
+
+        return back()->with('success', "Kedudukan '{$request->nama_kedudukan}' berhasil ditambahkan.");
+    }
+
+    public function updateKedudukan(Request $request, Kedudukan $kedudukan)
+    {
+        $request->validate([
+            'nama_kedudukan' => 'required|string|max:150',
+        ]);
+
+        $kedudukan->update([
+            'nama_kedudukan' => $request->nama_kedudukan,
+        ]);
+
+        return back()->with('success', "Kedudukan berhasil diupdate.");
+    }
+
+    public function deleteKedudukan(Kedudukan $kedudukan)
+    {
+        $kedudukan->delete();
+        return back()->with('success', "Kedudukan berhasil dihapus.");
     }
 }

@@ -12,6 +12,7 @@ class Event extends Model
         'user_id',
         'sub_kegiatan_id',
         'judul_event',
+        'kategori_event',
         'nama_event',
         'deskripsi',
         'tanggal_mulai',

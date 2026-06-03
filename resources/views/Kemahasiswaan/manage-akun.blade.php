@@ -4,7 +4,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-on-surface font-headline">Manajemen Akun</h2>
-            <p class="text-sm text-on-surface-variant mt-1">Kelola akun BEM dan Ormawa.</p>
+            <p class="text-sm text-on-surface-variant mt-1">Kelola akun Kemahasiswaan, BEM, dan Ormawa.</p>
         </div>
         <button onclick="openModal('modal-create')"
             class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary rounded-xl font-bold text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-all">
@@ -18,7 +18,7 @@
         @if($users->isEmpty())
         <div class="p-12 text-center">
             <span class="material-symbols-outlined text-5xl text-outline/20 mb-3 block">manage_accounts</span>
-            <p class="font-bold text-on-surface-variant">Belum ada akun BEM/Ormawa.</p>
+            <p class="font-bold text-on-surface-variant">Belum ada akun di sistem.</p>
         </div>
         @else
         {{-- Mobile Cards --}}
@@ -31,7 +31,7 @@
                         <p class="text-xs text-on-surface-variant">@ {{ $user->username }}</p>
                     </div>
                     <span class="px-2.5 py-1 text-[10px] font-bold uppercase rounded-full
-                        {{ $user->role === 'bem' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700' }}">
+                        @if($user->role === 'kemahasiswaan') bg-amber-100 text-amber-700 @elseif($user->role === 'bem') bg-blue-100 text-blue-700 @else bg-purple-100 text-purple-700 @endif">
                         {{ $user->role }}
                     </span>
                 </div>
@@ -66,7 +66,7 @@
                         <td class="px-6 py-4 font-mono text-xs text-on-surface-variant">{{ $user->username }}</td>
                         <td class="px-6 py-4">
                             <span class="px-2.5 py-1 text-[10px] font-bold uppercase rounded-full
-                                {{ $user->role === 'bem' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700' }}">
+                                @if($user->role === 'kemahasiswaan') bg-amber-100 text-amber-700 @elseif($user->role === 'bem') bg-blue-100 text-blue-700 @else bg-purple-100 text-purple-700 @endif">
                                 {{ $user->role }}
                             </span>
                         </td>
@@ -107,7 +107,7 @@
                         </div>
                         <div>
                             <h3 class="text-xl font-extrabold font-headline text-on-surface">Tambah Akun Baru</h3>
-                            <p class="text-xs text-on-surface-variant">Buat akun BEM atau Ormawa baru.</p>
+                            <p class="text-xs text-on-surface-variant">Buat akun Kemahasiswaan, BEM, atau Ormawa.</p>
                         </div>
                     </div>
 
@@ -136,6 +136,7 @@
                         <label class="block text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-2">Role <span class="text-error">*</span></label>
                         <select name="role" required
                             class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant/30 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                            <option value="kemahasiswaan">Kemahasiswaan</option>
                             <option value="bem">BEM</option>
                             <option value="ormawa">Ormawa</option>
                         </select>
