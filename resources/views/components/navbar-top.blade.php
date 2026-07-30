@@ -13,7 +13,7 @@
         </button>
         <span class="font-bold text-primary text-lg md:text-xl tracking-tight font-headline">E-SKKM</span>
     </div>
-    <div class="flex items-center gap-2 md:gap-4">
+    <button onclick="openModal('modal-profil')" class="flex items-center gap-2 md:gap-4 hover:bg-surface-container/50 p-1.5 rounded-xl transition-colors text-left focus:outline-none">
         <div class="text-right hidden sm:block">
             <p class="text-xs font-bold text-on-surface">{{ $userName }}</p>
             <p class="text-[10px] text-on-surface-variant">{{ $userSub }}</p>
@@ -21,5 +21,5 @@
         <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold">
             {{ strtoupper(substr($userName ?: 'U', 0, 1)) }}
         </div>
-    </div>
+    </button>
 </nav>

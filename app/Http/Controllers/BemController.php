@@ -35,18 +35,23 @@ class BemController extends Controller
     }
 
     /**
-     * Halaman verifikasi BEM — tabel antrean
+     * Halaman verifikasi BEM — tabel antrean (Dikelompokkan per Mahasiswa)
      */
     public function verifikasi()
     {
-        $sertifikats = Sertifikat::where('status', 'pending')
-            ->with(['mahasiswa', 'kedudukan.subKegiatan.bidangKegiatan'])      
-            ->orderBy('created_at', 'asc')
-            ->paginate(15);
+        $mahasiswas = \App\Models\Mahasiswa::whereHas('sertifikats', function ($q) {
+            $q->where('status', 'pending');
+        })
+        ->with(['sertifikats' => function ($q) {
+            $q->where('status', 'pending')
+              ->with('kedudukan.subKegiatan.bidangKegiatan')
+              ->orderBy('created_at', 'asc');
+        }])
+        ->paginate(5);
 
         $totalAntrean = Sertifikat::where('status', 'pending')->count();
-        // echo $sertifikats->toJson();
-        return view('BEM.verifikasi-bem', compact('sertifikats', 'totalAntrean'));
+
+        return view('BEM.verifikasi-bem', compact('mahasiswas', 'totalAntrean'));
     }
 
     /**
@@ -71,6 +76,10 @@ class BemController extends Controller
 
         $sertifikat->update($updateData);
 
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Sertifikat berhasil diverifikasi.']);
+        }
+
         return redirect()->back()->with('success', 'Sertifikat berhasil diverifikasi.');
     }
 
@@ -89,6 +98,34 @@ class BemController extends Controller
             'verified_by_bem' => Auth::id(),
         ]);
 
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Sertifikat ditolak.']);
+        }
+
         return redirect()->back()->with('success', 'Sertifikat ditolak.');
+    }
+
+    /**
+     * Riwayat verifikasi BEM (ACC/Tolak)
+     */
+    public function riwayat()
+    {
+        $adminId = Auth::id();
+
+        $totalAcc = Sertifikat::where('verified_by_bem', $adminId)
+            ->whereIn('status', ['verified_bem', 'approved'])
+            ->count();
+
+        $totalReject = Sertifikat::where('verified_by_bem', $adminId)
+            ->where('status', 'rejected')
+            ->count();
+
+        $sertifikats = Sertifikat::where('verified_by_bem', $adminId)
+            ->with(['mahasiswa', 'kedudukan.subKegiatan.bidangKegiatan'])
+            ->orderBy('verified_bem_at', 'desc')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(15);
+
+        return view('BEM.riwayat-bem', compact('sertifikats', 'totalAcc', 'totalReject'));
     }
 }

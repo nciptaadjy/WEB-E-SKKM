@@ -138,8 +138,8 @@
                                         Sub Kegiatan <span class="text-error">*</span>
                                     </label>
                                     <div class="relative">
-                                        <select id="sub_kegiatan" required disabled class="w-full bg-surface-container-lowest border border-outline-variant/30 focus:border-primary focus:ring-2 focus:ring-primary/15 rounded-xl py-3 sm:py-3.5 px-4 text-sm appearance-none transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed">
-                                            <option disabled selected value="">Pilih Bidang dulu</option>
+                                        <select id="sub_kegiatan" required class="w-full bg-surface-container-lowest border border-outline-variant/30 focus:border-primary focus:ring-2 focus:ring-primary/15 rounded-xl py-3 sm:py-3.5 px-4 text-sm appearance-none transition-all outline-none">
+                                            <option disabled selected value="">Pilih Sub Kegiatan</option>
                                         </select>
                                         <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-lg">expand_more</span>
                                     </div>
@@ -179,8 +179,8 @@
                                         Kedudukan / Peran <span class="text-error">*</span>
                                     </label>
                                     <div class="relative">
-                                        <select id="kedudukan" name="kedudukan_id" required disabled class="w-full bg-surface-container-lowest border border-outline-variant/30 focus:border-primary focus:ring-2 focus:ring-primary/15 rounded-xl py-3 sm:py-3.5 px-4 text-sm appearance-none transition-all outline-none disabled:opacity-50 disabled:cursor-not-allowed">
-                                            <option disabled selected value="">Pilih Sub Kegiatan dulu</option>
+                                        <select id="kedudukan" name="kedudukan_id" required class="w-full bg-surface-container-lowest border border-outline-variant/30 focus:border-primary focus:ring-2 focus:ring-primary/15 rounded-xl py-3 sm:py-3.5 px-4 text-sm appearance-none transition-all outline-none">
+                                            <option disabled selected value="">Pilih Kedudukan</option>
                                         </select>
                                         <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-lg">expand_more</span>
                                     </div>
@@ -353,6 +353,38 @@
 
 @push('scripts')
 <script>
+    // ===== Data dari Server (Semua Bidang, Sub, Kedudukan, Bobot) =====
+    const skkmData = @json($bidangKegiatans);
+    
+    let allSub = [];
+    let allKedudukan = [];
+
+    // Persiapkan data flat untuk memudahkan auto-fill dan filtering
+    skkmData.forEach(bidang => {
+        if (!bidang.sub_kegiatans) return;
+        bidang.sub_kegiatans.forEach(sub => {
+            allSub.push({
+                id: sub.id,
+                nama_sub: sub.nama_sub,
+                bidang_id: bidang.id,
+                bidang_nama: bidang.nama_bidang,
+                has_tingkat: sub.has_tingkat
+            });
+
+            if (!sub.kedudukans) return;
+            sub.kedudukans.forEach(ked => {
+                allKedudukan.push({
+                    id: ked.id,
+                    nama_kedudukan: ked.nama_kedudukan,
+                    sub_id: sub.id,
+                    sub_nama: sub.nama_sub,
+                    bidang_id: bidang.id,
+                    bobot_skkms: ked.bobot_skkms || []
+                });
+            });
+        });
+    });
+
     // ===== Elemen =====
     const bidangEl = document.getElementById('bidang_kegiatan');
     const subEl = document.getElementById('sub_kegiatan');
@@ -365,6 +397,147 @@
     const linkError = document.getElementById('link_error');
     const panduan = document.getElementById('panduan_link');
     let currentHasTingkat = true;
+
+    // ===== Render Dropdowns Awal (Terbuka semua) =====
+    function renderSubKegiatan(filterBidangId = null) {
+        subEl.innerHTML = '<option disabled selected value="">Pilih Sub Kegiatan</option>';
+        const filtered = filterBidangId ? allSub.filter(s => s.bidang_id == filterBidangId) : allSub;
+        filtered.forEach(s => {
+            // Jika filterBidangId tidak ada (render semua), tambahkan context nama bidang agar jelas
+            const label = filterBidangId ? s.nama_sub : `${s.nama_sub} — (Bidang: ${s.bidang_nama})`;
+            subEl.innerHTML += `<option value="${s.id}" data-hastingkat="${s.has_tingkat}">${label}</option>`;
+        });
+    }
+
+    function renderKedudukan(filterBidangId = null, filterSubId = null) {
+        kedudukanEl.innerHTML = '<option disabled selected value="">Pilih Kedudukan / Peran</option>';
+        let filtered = allKedudukan;
+        if (filterSubId) {
+            filtered = allKedudukan.filter(k => k.sub_id == filterSubId);
+        } else if (filterBidangId) {
+            filtered = allKedudukan.filter(k => k.bidang_id == filterBidangId);
+        }
+
+        filtered.forEach(k => {
+            // Jika filterSubId tidak ada (render semua), tambahkan context nama sub agar jelas
+            const label = filterSubId ? k.nama_kedudukan : `${k.nama_kedudukan} — (Kegiatan: ${k.sub_nama})`;
+            kedudukanEl.innerHTML += `<option value="${k.id}">${label}</option>`;
+        });
+    }
+
+    // Panggil render awal
+    renderSubKegiatan();
+    renderKedudukan();
+
+    // ===== Logika SMART REVERSE-FILL & CASCADE =====
+
+    // 1. Jika Kedudukan dipilih (Bisa memicu AUTO-FILL ke atas)
+    kedudukanEl.addEventListener('change', function() {
+        const kedId = this.value;
+        const kedData = allKedudukan.find(k => k.id == kedId);
+        
+        if (kedData) {
+            // Auto-fill Bidang
+            if (bidangEl.value != kedData.bidang_id) {
+                bidangEl.value = kedData.bidang_id;
+                // Render ulang sub & kedudukan dengan filter agar tampilannya rapi/pendek
+                renderSubKegiatan(kedData.bidang_id);
+                renderKedudukan(kedData.bidang_id, kedData.sub_id);
+                // Kembalikan nilai yang baru di-render
+                this.value = kedId; 
+            }
+            
+            // Auto-fill Sub Kegiatan
+            subEl.value = kedData.sub_id;
+
+            // Cek tingkat
+            checkTingkat(kedData.sub_id);
+            updateBobotLocal();
+        }
+    });
+
+    // 2. Jika Sub Kegiatan dipilih (Bisa memicu AUTO-FILL Bidang & FILTER Kedudukan)
+    subEl.addEventListener('change', function() {
+        const subId = this.value;
+        const subData = allSub.find(s => s.id == subId);
+
+        if (subData) {
+            // Auto-fill Bidang
+            if (bidangEl.value != subData.bidang_id) {
+                bidangEl.value = subData.bidang_id;
+                renderSubKegiatan(subData.bidang_id);
+                this.value = subId;
+            }
+
+            // Filter Kedudukan
+            renderKedudukan(subData.bidang_id, subId);
+            
+            checkTingkat(subId);
+            estimasiEl.classList.add('hidden'); // Sembunyikan poin sampai kedudukan dipilih
+        }
+    });
+
+    // 3. Jika Bidang dipilih (Bisa memicu FILTER ke bawah)
+    bidangEl.addEventListener('change', function() {
+        const bidId = this.value;
+        renderSubKegiatan(bidId);
+        renderKedudukan(bidId, null);
+        estimasiEl.classList.add('hidden');
+        
+        // Reset tingkat
+        tingkatWrapper.style.display = '';
+        tingkatEl.setAttribute('name', 'tingkat');
+        currentHasTingkat = true;
+    });
+
+    // Fungsi cek ketersediaan dropdown tingkat
+    function checkTingkat(subId) {
+        const subData = allSub.find(s => s.id == subId);
+        if (subData) {
+            currentHasTingkat = (subData.has_tingkat == 1 || subData.has_tingkat === true);
+            tingkatWrapper.style.display = currentHasTingkat ? '' : 'none';
+            
+            if (!currentHasTingkat) {
+                tingkatEl.value = '';
+                tingkatEl.removeAttribute('name'); 
+            } else {
+                tingkatEl.value = 'perguruan_tinggi'; 
+                tingkatEl.setAttribute('name', 'tingkat');
+            }
+        }
+    }
+
+
+    // ===== Kalkulasi Bobot Lokal (Tanpa API) =====
+    function updateBobotLocal() {
+        const kedId = kedudukanEl.value;
+        if (!kedId) return;
+
+        const kedData = allKedudukan.find(k => k.id == kedId);
+        if (!kedData || !kedData.bobot_skkms) return;
+
+        const tingkat = currentHasTingkat ? tingkatEl.value : null;
+        let poin = 0;
+
+        if (tingkat) {
+            const b = kedData.bobot_skkms.find(x => x.tingkat == tingkat);
+            if (b) poin = b.bobot;
+        } else {
+            // Jika tidak ada tingkat, biasanya tingkatnya 'perguruan_tinggi' atau null di database
+            const b = kedData.bobot_skkms[0];
+            if (b) poin = b.bobot;
+        }
+
+        if (poin > 0) {
+            bobotVal.textContent = poin + ' Poin';
+            estimasiEl.classList.remove('hidden');
+        } else {
+            estimasiEl.classList.add('hidden');
+        }
+    }
+
+    tingkatEl.addEventListener('change', updateBobotLocal);
+
 
     // ===== Panduan per platform =====
     const panduanText = {
@@ -439,94 +612,6 @@
             this.classList.add('border-outline-variant/30');
         }
     });
-
-    tingkatEl.setAttribute('name', 'tingkat');
-
-    // ===== Cascade: Bidang → Sub Kegiatan =====
-    bidangEl.addEventListener('change', async function() {
-        const id = this.value;
-        subEl.innerHTML = '<option disabled selected value="">Memuat...</option>';
-        subEl.disabled = true;
-        kedudukanEl.innerHTML = '<option disabled selected value="">Pilih Sub Kegiatan dulu</option>';
-        kedudukanEl.disabled = true;
-        estimasiEl.classList.add('hidden');
-
-        tingkatWrapper.style.display = '';
-        tingkatEl.setAttribute('name', 'tingkat');
-        currentHasTingkat = true;
-
-        try {
-            const res = await fetch(`/mahasiswa/api/sub-kegiatan/${id}`);
-            const data = await res.json();
-            subEl.innerHTML = '<option disabled selected value="">Pilih Sub Kegiatan</option>';
-            data.forEach(s => {
-                subEl.innerHTML +=
-                    `<option value="${s.id}" data-has-tingkat="${s.has_tingkat}">${s.nama_sub}</option>`;
-            });
-            subEl.disabled = false;
-        } catch (e) {
-            subEl.innerHTML = '<option disabled selected value="">Gagal memuat, coba lagi</option>';
-        }
-    });
-
-    // ===== Cascade: Sub Kegiatan → Kedudukan =====
-    subEl.addEventListener('change', async function() {
-        const id = this.value;
-        const opt = this.options[this.selectedIndex];
-        currentHasTingkat = opt.dataset.hasTingkat === '1' 
-             || opt.dataset.hasTingkat === 'true';
-
-        tingkatWrapper.style.display = currentHasTingkat ? '' : 'none';
-        if (!currentHasTingkat) {
-            tingkatEl.value = '';
-            tingkatEl.removeAttribute('name'); 
-        } else {
-            tingkatEl.value = 'perguruan_tinggi'; 
-            tingkatEl.setAttribute('name', 'tingkat');
-        }
-
-        kedudukanEl.innerHTML = '<option disabled selected value="">Memuat...</option>';
-        kedudukanEl.disabled = true;
-        estimasiEl.classList.add('hidden');
-
-        try {
-            const res = await fetch(`/mahasiswa/api/kedudukan/${id}`);
-            const data = await res.json();
-            kedudukanEl.innerHTML = '<option disabled selected value="">Pilih Kedudukan</option>';
-            data.forEach(k => {
-                kedudukanEl.innerHTML += `<option value="${k.id}">${k.nama_kedudukan}</option>`;
-            });
-            kedudukanEl.disabled = false;
-        } catch (e) {
-            kedudukanEl.innerHTML = '<option disabled selected value="">Gagal memuat</option>';
-        }
-    });
-
-    // ===== Update estimasi bobot =====
-    async function updateBobot() {
-        const kid = kedudukanEl.value;
-        if (!kid) return;
-
-        const tingkat = currentHasTingkat ? tingkatEl.value : null;
-        const url = tingkat ?
-            `/mahasiswa/api/bobot/${kid}/${tingkat}` :
-            `/mahasiswa/api/bobot/${kid}`;
-
-        try {
-            const res = await fetch(url);
-            const data = await res.json();
-            if (data.length > 0) {
-                bobotVal.textContent = data[0].bobot + ' Poin';
-                estimasiEl.classList.remove('hidden');
-            } else {
-                estimasiEl.classList.add('hidden');
-            }
-        } catch (e) {
-        }
-    }
-
-    kedudukanEl.addEventListener('change', updateBobot);
-    tingkatEl.addEventListener('change', updateBobot);
 
     document.getElementById('form-upload').addEventListener('submit', function(e) {
         const ok = validateLink(linkInput.value);

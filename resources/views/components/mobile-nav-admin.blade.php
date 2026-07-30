@@ -10,19 +10,19 @@
             $navItems = [
                 ['route' => 'bem.dashboard', 'icon' => 'dashboard', 'label' => 'Dasbor', 'key' => 'dashboard'],
                 ['route' => 'bem.verifikasi', 'icon' => 'fact_check', 'label' => 'Verifikasi', 'key' => 'verifikasi'],
+                ['route' => 'bem.riwayat', 'icon' => 'history', 'label' => 'Riwayat', 'key' => 'riwayat'],
             ];
         } elseif ($role === 'kemahasiswaan') {
             $navItems = [
                 ['route' => 'kemahasiswaan.dashboard', 'icon' => 'dashboard', 'label' => 'Dasbor', 'key' => 'dashboard'],
                 ['route' => 'kemahasiswaan.verifikasi', 'icon' => 'fact_check', 'label' => 'Verifikasi', 'key' => 'verifikasi'],
+                ['route' => 'kemahasiswaan.riwayat', 'icon' => 'history', 'label' => 'Riwayat', 'key' => 'riwayat'],
                 ['route' => 'kemahasiswaan.akun', 'icon' => 'group', 'label' => 'Akun', 'key' => 'akun'],
-                ['route' => 'kemahasiswaan.batch', 'icon' => 'receipt_long', 'label' => 'Batch', 'key' => 'batch'],
             ];
         } elseif ($role === 'ormawa') {
             $navItems = [
                 ['route' => 'ormawa.dashboard', 'icon' => 'dashboard', 'label' => 'Dasbor', 'key' => 'dashboard'],
                 ['route' => 'ormawa.events', 'icon' => 'campaign', 'label' => 'Event', 'key' => 'events'],
-                ['route' => 'ormawa.batch', 'icon' => 'receipt_long', 'label' => 'Batch', 'key' => 'batch'],
             ];
         }
     }

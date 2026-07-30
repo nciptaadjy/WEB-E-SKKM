@@ -1,34 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
-class LoginController extends Controller
+class MahasiswaAuthController extends Controller
 {
     /**
      * Tampilkan halaman login mahasiswa
      */
-    public function showLoginMahasiswa()
+    public function showLogin()
     {
         return view('Login.mahasiswa.login');
     }
-
-    /**
-     * Tampilkan halaman login admin (BEM/Ormawa/Kemahasiswaan)
-     */
-    public function showLoginAdmin()
-    {
-        return view('Login.admin.login');
-    }
-
-    // ══════════════════════════════════════════════
-    // MICROSOFT OAUTH (Login Mahasiswa)
-    // ══════════════════════════════════════════════
 
     /**
      * Redirect ke halaman login Microsoft
@@ -42,9 +29,6 @@ class LoginController extends Controller
 
     /**
      * Handle callback dari Microsoft OAuth
-     * - Cari mahasiswa berdasarkan microsoft_id atau email
-     * - Jika belum ada, buat akun baru otomatis
-     * - Set session dan redirect ke dashboard
      */
     public function handleMicrosoftCallback(Request $request)
     {
@@ -67,7 +51,6 @@ class LoginController extends Controller
         // Jika masih tidak ditemukan, buat akun baru
         if (!$mahasiswa) {
             $email = $microsoftUser->getEmail();
-            // Coba ekstrak NIM dari email (format: nim@domain.ac.id)
             $nimFromEmail = $email ? explode('@', $email)[0] : null;
 
             $mahasiswa = Mahasiswa::create([
@@ -81,7 +64,7 @@ class LoginController extends Controller
             ]);
         }
 
-        // Update microsoft_id jika belum ada (untuk mahasiswa lama yang match via email)
+        // Update microsoft_id jika belum ada
         if (!$mahasiswa->microsoft_id) {
             $mahasiswa->update([
                 'microsoft_id' => $microsoftUser->getId(),
@@ -100,7 +83,6 @@ class LoginController extends Controller
             'mahasiswa_email'    => $mahasiswa->email,
         ]);
 
-        // Update last_login
         $mahasiswa->update(['last_login' => now()]);
 
         return redirect()->route('mahasiswa.dashboard');
@@ -108,7 +90,6 @@ class LoginController extends Controller
 
     /**
      * DUMMY LOGIN (Hanya untuk Development)
-     * Mengizinkan login hanya dengan memasukkan NIM (tanpa password/SSO).
      */
     public function dummyLogin(Request $request)
     {
@@ -120,7 +101,6 @@ class LoginController extends Controller
 
         $mahasiswa = Mahasiswa::where('nim', $request->nim)->first();
 
-        // Buat dummy user jika belum ada
         if (!$mahasiswa) {
             $mahasiswa = Mahasiswa::create([
                 'nim' => $request->nim,
@@ -128,7 +108,7 @@ class LoginController extends Controller
                 'prodi' => 'Sistem Informasi',
                 'fakultas' => 'Bisnis & Teknologi',
                 'angkatan' => date('Y'),
-                'password' => bcrypt('password'), // Add default password to prevent SQL error
+                'password' => bcrypt('password'),
             ]);
         }
 
@@ -147,43 +127,10 @@ class LoginController extends Controller
         return redirect()->route('mahasiswa.dashboard');
     }
 
-    // ══════════════════════════════════════════════
-    // LOGIN ADMIN (BEM / Ormawa / Kemahasiswaan)
-    // ══════════════════════════════════════════════
-
-    /**
-     * Proses login admin (BEM/Ormawa/Kemahasiswaan via Laravel Auth)
-     */
-    public function authenticateAdmin(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            $request->session()->regenerate();
-
-            $user = Auth::user();
-
-            // Redirect berdasarkan role
-            return match ($user->role) {
-                'bem' => redirect()->route('bem.dashboard'),
-                'ormawa' => redirect()->route('ormawa.dashboard'),
-                'kemahasiswaan' => redirect()->route('kemahasiswaan.dashboard'),
-                default => redirect()->route('login.admin'),
-            };
-        }
-
-        return back()->withErrors([
-            'login' => 'Username atau password salah.',
-        ])->withInput(['username' => $request->username]);
-    }
-
     /**
      * Logout mahasiswa
      */
-    public function logoutMahasiswa(Request $request)
+    public function logout(Request $request)
     {
         $request->session()->forget([
             'mahasiswa_id',
@@ -196,17 +143,5 @@ class LoginController extends Controller
         ]);
 
         return redirect()->route('login');
-    }
-
-    /**
-     * Logout admin
-     */
-    public function logoutAdmin(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login.admin');
     }
 }

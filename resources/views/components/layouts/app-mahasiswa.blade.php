@@ -160,6 +160,82 @@
         </div>
     </div>
 
+    {{-- Modal Profil Mahasiswa --}}
+    <div id="modal-profil"
+        class="modal-wrap hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-slate-900/60 backdrop-blur-sm"
+        onclick="if(event.target===this)closeModal('modal-profil')">
+        <div class="modal-box bg-white w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden border border-outline-variant/10 max-h-[92vh] flex flex-col">
+            <div class="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-outline-variant/10 shrink-0 bg-surface-container-lowest">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-xl">person</span>
+                    </div>
+                    <h3 class="text-base font-extrabold text-on-surface font-headline">Profil Mahasiswa</h3>
+                </div>
+                <button onclick="closeModal('modal-profil')"
+                    class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center transition-colors">
+                    <span class="material-symbols-outlined text-on-surface-variant text-xl">close</span>
+                </button>
+            </div>
+            
+            <div class="overflow-y-auto flex-1 p-5 sm:p-6 space-y-6">
+                {{-- Header Profil --}}
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-primary/20 mb-4">
+                        {{ strtoupper(substr(session('mahasiswa_nama', 'U'), 0, 1)) }}
+                    </div>
+                    <h4 class="text-xl font-bold text-on-surface font-headline leading-tight">{{ session('mahasiswa_nama', 'Nama Tidak Diketahui') }}</h4>
+                    <p class="text-sm font-medium text-primary mt-1">{{ session('mahasiswa_nim', 'NIM Tidak Diketahui') }}</p>
+                </div>
+
+                {{-- Informasi Grid --}}
+                <div>
+                    <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-3">Informasi Akademik</p>
+                    <div class="grid grid-cols-1 gap-2.5">
+                        <div class="p-3 bg-surface-container-low rounded-xl flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-on-surface-variant text-[1.1rem]">school</span>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-on-surface-variant mb-0.5">Program Studi</p>
+                                <p class="text-sm font-semibold text-on-surface">{{ session('mahasiswa_prodi', '-') }}</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-on-surface-variant text-[1.1rem]">domain</span>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-on-surface-variant mb-0.5">Fakultas</p>
+                                <p class="text-sm font-semibold text-on-surface">{{ session('mahasiswa_fakultas', '-') }}</p>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-surface-container-low rounded-xl flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-on-surface-variant text-[1.1rem]">mail</span>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-on-surface-variant mb-0.5">Email</p>
+                                <p class="text-sm font-semibold text-on-surface">{{ session('mahasiswa_email', '-') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-outline-variant/10 bg-surface-container-lowest shrink-0">
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="w-full py-3 rounded-xl bg-error/10 text-error font-bold text-sm hover:bg-error/20 transition-colors flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[1.1rem]">logout</span>
+                        Keluar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div id="sidebar-overlay"
         class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm hidden"
         onclick="toggleMobileSidebar()"></div>

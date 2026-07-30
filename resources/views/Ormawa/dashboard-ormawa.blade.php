@@ -9,10 +9,10 @@
     {{-- Welcome --}}
     <header>
         <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-on-surface font-headline">Halo, {{ Auth::user()->nama_pengguna }}!</h1>
-        <p class="text-on-surface-variant mt-1">Ringkasan aktivitas dan pengajuan kredit E-SKKM periode ini.</p>
+        <p class="text-on-surface-variant mt-1">Ringkasan aktivitas event E-SKKM periode ini.</p>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         <div class="bg-primary p-5 md:p-6 rounded-xl text-white shadow-xl shadow-primary/20 group hover:-translate-y-1 transition-transform">
             <div class="flex items-center gap-3 mb-2">
                 <span class="material-symbols-outlined text-2xl">event</span>
@@ -20,33 +20,6 @@
             </div>
             <p class="text-2xl md:text-3xl font-bold">{{ $totalEvents }}</p>
             <p class="text-xs opacity-80 mt-1">Total event dibuat</p>
-        </div>
-        
-        <div class="bg-surface-container-lowest p-5 md:p-6 rounded-xl shadow-[0_12px_40px_rgba(23,28,31,0.06)] border border-secondary/20 group hover:-translate-y-1 transition-transform">
-            <div class="flex items-center gap-3 mb-2">
-                <span class="material-symbols-outlined text-2xl text-secondary">people</span>
-                <h3 class="font-bold font-headline text-base text-on-surface">Total Peserta</h3>
-            </div>
-            <p class="text-2xl md:text-3xl font-bold text-secondary">{{ $totalPesertaEvents }}</p>
-            <p class="text-xs text-on-surface-variant mt-1">Dari semua event</p>
-        </div>
-
-        <div class="bg-surface-container-lowest p-5 md:p-6 rounded-xl shadow-[0_12px_40px_rgba(23,28,31,0.06)] border border-amber-500/20 group hover:-translate-y-1 transition-transform">
-            <div class="flex items-center gap-3 mb-2">
-                <span class="material-symbols-outlined text-2xl text-amber-600">group_add</span>
-                <h3 class="font-bold font-headline text-base text-on-surface">Peserta Batch</h3>
-            </div>
-            <p class="text-2xl md:text-3xl font-bold text-amber-600">{{ $totalBatchPeserta }}</p>
-            <p class="text-xs text-on-surface-variant mt-1">Total daftar via {{ $totalBatch }} Batch</p>
-        </div>
-
-        <div class="bg-surface-container-lowest p-5 md:p-6 rounded-xl shadow-[0_12px_40px_rgba(23,28,31,0.06)] border border-green-500/20 group hover:-translate-y-1 transition-transform">
-            <div class="flex items-center gap-3 mb-2">
-                <span class="material-symbols-outlined text-2xl text-green-600">verified</span>
-                <h3 class="font-bold font-headline text-base text-on-surface">Batch Di-ACC</h3>
-            </div>
-            <p class="text-2xl md:text-3xl font-bold text-green-600">{{ $totalBatchPesertaAcc }}</p>
-            <p class="text-xs text-on-surface-variant mt-1">Peserta dgn nomor sertifikat</p>
         </div>
     </div>
 

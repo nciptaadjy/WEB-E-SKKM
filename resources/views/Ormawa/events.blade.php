@@ -40,7 +40,6 @@
                 @endif
                 <div class="flex items-center gap-4 mt-4 text-xs text-on-surface-variant">
                     <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> {{ $event->tanggal_mulai->format('d M Y') }} — {{ $event->tanggal_selesai->format('d M Y') }}</span>
-                    <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">group</span> {{ $event->peserta_events_count }} peserta</span>
                 </div>
                 @if($event->link_form)
                 <a href="{{ $event->link_form }}" target="_blank" class="inline-flex items-center gap-1 text-xs text-primary font-semibold mt-3 hover:underline">
@@ -48,10 +47,7 @@
                 </a>
                 @endif
             </div>
-            <div class="px-5 sm:px-6 py-3 bg-surface-container-low/50 border-t border-outline-variant/10 flex items-center justify-between">
-                <a href="{{ route('ormawa.peserta', $event) }}" class="text-xs text-primary font-bold hover:underline flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm">upload_file</span> Upload Peserta (CSV)
-                </a>
+            <div class="px-5 sm:px-6 py-3 bg-surface-container-low/50 border-t border-outline-variant/10 flex items-center justify-end">
                 <form action="{{ route('ormawa.events.delete', $event) }}" method="POST" onsubmit="return confirm('Hapus event ini?')">
                     @csrf @method('DELETE')
                     <button type="submit" class="text-xs text-error font-semibold hover:underline flex items-center gap-1">
